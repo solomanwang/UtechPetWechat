@@ -1,0 +1,130 @@
+/* pages/home/home.wxss */
+#map{
+  z-index: -100;
+  position: absolute;
+  top: 0rpx;
+}
+/* 首页宠物信息 */
+.infor{
+  width: 200rpx;
+  border: 1rpx solid #8f8c8c;
+  border-radius: 20rpx;
+  margin-left: 20rpx;
+  margin-top: 40rpx;
+  box-shadow: 10rpx 10rpx 25rpx #8f8c8c;
+  background: #fff;
+}
+.infor .not{
+  width: 200rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  /* border: 1rpx solid #8f8c8c; */
+  font-size: 25rpx; 
+  background: #fff;
+  text-align: center;
+}
+.inforcont{
+  height: 80rpx;
+  width: 180rpx;
+  margin: auto;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.bor{
+  width: 180rpx;
+  margin: auto;
+  border: 0.5rpx solid #DBDBDB;
+}
+.inforcont .pet{
+  height: 50rpx;
+  width: 50rpx;
+  border-radius: 50%;
+}
+.inforcont .name{
+  font-size: 24rpx;
+  margin-left: 30rpx;
+}
+.infor .inforcom{
+  width: 180rpx;
+  margin: auto;
+  text-align: center;
+  padding: 10rpx 0rpx;
+  font-size: 24rpx;
+  display: flex;
+}
+/* 电子围栏 */
+.fence{
+  height: 40rpx;
+  width: 150rpx;
+  border-radius: 50rpx;
+  border: 1rpx solid #8f8c8c;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  align-items: center;
+  background: #fff;
+  position: absolute;
+  top: 40rpx;
+  right: 20rpx;
+  padding: 10rpx;
+  box-shadow: 10rpx 10rpx 25rpx #8f8c8c;
+}
+.fence cover-image{
+  height: 50rpx;
+  width: 50rpx;
+}
+/* 轨迹追踪 */
+.track{
+  height: 40rpx;
+  width: 150rpx;
+  border-radius: 50rpx;
+  border: 1rpx solid #8f8c8c;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  align-items: center;
+  background: #fff;
+  position: absolute;
+  top: 120rpx;
+  right: 20rpx;
+  padding: 10rpx;
+  box-shadow: 10rpx 10rpx 25rpx #8f8c8c;
+}
+.track cover-image{
+  height: 50rpx;
+  width: 50rpx;
+}
+/* 狗狗在哪儿 */
+/* .go{
+  position: absolute;
+  bottom: 50rpx;
+  width: 100%;
+  height: 120rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #F35556;
+} */
+.go{
+  position: absolute;
+  bottom: 300rpx;
+  right: 20rpx;
+  height: 40rpx;
+  width: 150rpx;
+  line-height: 45rpx;
+  text-align: center;
+  background: #7ca627;
+  border: 1rpx solid #7ca627;
+  color: #fff;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  box-shadow: 10rpx 10rpx 25rpx #8f8c8c;
+}
+.go.hand{
+  bottom: 200rpx;
+} 
+.go.auto{
+  bottom: 100rpx;
+}
+/* 刷新地图定位 */

@@ -1,0 +1,34 @@
+<!--pages/equip/add/add.wxml-->
+<view class='cont'>
+  <view class='conter'>
+    <view class='information'>
+      <image src='../../../image/pic.jpg'></image>
+      <view class='infor-detail'>
+        <view>
+          <text>设备号：</text>
+          <text class='number'>{{eqmNumber}}</text>
+        </view>
+        <view>
+          <text>型号：</text>
+          <text>{{modelName}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='connect'>
+      <text>当前绑定的手机是:</text>
+      <text bindinput='getPhoneValue' value='{{phone}}'>{{phoneId}}</text>
+    </view>
+    <view class='buse'>
+      <image src='../../../image/help1.svg'></image>
+      <text>如果当前号码无法接受短信,请联系客服进行验证</text>
+    </view>
+    <view class='code'>
+      <text catchtap='removeTap' disabled='{{disabled}}'>{{codename}}</text>
+    </view>
+    <view class='phone'>
+      <text>验证码：</text>
+      <input placeholder-class="place-holder" placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'></input>
+    </view>
+  </view>
+</view>
+<button class='bind' bindtap='unbidTap'>解绑</button>

@@ -1,0 +1,186 @@
+/* pages/pet/edit/edit.wxss */
+.delete{
+  width: 200rpx;
+  background: #FF5057;
+  margin-right: 60rpx;
+  margin-top: 50rpx;
+  color: #fff;
+  margin-bottom: 50rpx;
+}
+.cont{
+  height: 730rpx;
+  width: 85%;
+  margin: auto;
+  border: 1rpx solid #8f8c8c;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  background: #fff;
+}
+
+/* 宠物头像 */
+.cont .pet{
+  border-bottom: 1rpx solid #D7D7D7;
+  width: 100%;
+  height: 200rpx;
+  display: flex;
+  justify-content: center;
+}
+.cont .pet image{
+  height: 150rpx;
+  width: 150rpx;
+  margin: auto;
+}
+/* 宠物信息 */
+.key{
+  width:90%;
+  margin: auto;
+  height: 100rpx;
+  /* border-bottom: 1rpx solid #D7D7D7; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40rpx;
+}
+.key .left{
+  font-size: 40rpx;
+}
+.key input{
+  width: 250rpx;
+  border-bottom: 1rpx solid #D7D7D7;
+}
+.key .row-wrap{
+  width: 250rpx;
+  border-bottom: 1rpx solid #D7D7D7;
+  overflow:hidden; 
+  text-overflow:ellipsis;
+  white-space:nowrap; 
+}
+.left.age{
+  margin-left: 80rpx;
+}
+.key image{
+  height: 50rpx;
+  width: 50rpx;
+}
+/* 性别 */
+.left.sex{
+  margin-left: 20rpx;
+}
+.key .boysex{
+  margin-left: 60rpx;
+}
+.save{
+  width: 250rpx;
+  background: #FF5057;
+  margin-top: 50rpx;
+  color: #fff;
+}
+
+/* 显示与隐藏 */
+.information image{
+  height: 100rpx;
+  width: 100rpx;
+}
+.information .infor-detail{
+  height: 120rpx;
+  width: 400rpx;
+  /* border: 1rpx solid #dcdcdc; */
+  font-size: 30rpx;
+}
+.information .infor-detail view{
+  margin-left: 20rpx;
+  margin-top: 15rpx;
+}
+.information .infor-detail view .number{
+  color: #dcdcdc;
+  margin-left: 30rpx;
+}
+.untie{
+  width: 110rpx;
+  background: #FF5057;
+  color: #fff;
+  font-size: 25rpx;
+}
+/* 下拉选择框 */
+.phone_personal{
+width: 100%;
+height:130rpx;
+line-height:130rpx;
+text-align: center;
+border: 1rpx solid #dcdcdc;
+border-radius: 10rpx;
+display: flex;
+justify-content: start;
+align-items: center;
+}
+.phone_personal image{
+  height: 100rpx;
+  width: 100rpx;
+  margin-left: 20rpx; 
+}
+.phone_personal .infor-detail{
+  height: 120rpx;
+  width: 400rpx;
+  /* border: 1rpx solid #dcdcdc; */
+  font-size: 35rpx;
+}
+.phone_personal .infor-detail text{
+  height: 120rpx;
+  line-height: 120rpx;
+}
+.phone_one{
+display: flex;
+/* position: relative; */
+justify-content: space-between;
+width:100%;
+height:130rpx;
+margin:0 auto;
+border-radius: 10rpx;
+}
+.phone_select{
+  position: relative;
+  bottom:530rpx;
+  width: 100%;
+  z-index: 2;
+  height: 400rpx;
+  background: white;
+  /* max-height: 600rpx; */
+  border: 1rpx solid #8f8c8c;
+  border-radius: 10rpx;
+  overflow: scroll;
+  box-sizing: border-box; 
+}
+.select_one{
+  width: 95%;
+  height: 130rpx;
+  border: 1rpx solid #dcdcdc;
+  border-radius: 10rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10rpx auto;
+  box-sizing: border-box;
+  background: white;
+}
+#ever .infor-detail{
+  height: 120rpx;
+  width: 400rpx;
+  /* border: 1rpx solid #dcdcdc; */
+  font-size: 30rpx;
+}
+#ever .infor-detail view{
+  margin: 0;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: start;
+  padding-left: 50rpx;
+}
+#ever .infor-detail view text{
+  height: 60rpx;
+  line-height: 60rpx;
+}
+#ever .infor-detail view .number{
+  color: #dcdcdc;
+  margin-left: 30rpx;
+}
+

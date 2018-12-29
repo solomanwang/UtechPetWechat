@@ -1,0 +1,86 @@
+/* pages/pet/pet.wxss */
+.cont{
+  height: 470rpx;
+  width: 85%;
+  border: 1rpx solid #CDCDCD;
+  border-radius: 20rpx;
+  margin: auto;
+  background: #fff;
+  margin-top: 50rpx;
+  padding: 10rpx 30rpx;
+}
+
+.tit{
+  height: 40rpx;
+  width: 100%;
+  border-bottom: 1rpx solid #CDCDCD;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 0rpx;
+}
+.tit .card{
+  font-size: 30rpx;
+}
+.tit .kid{
+  height: 50rpx;
+  padding: 0rpx 20rpx;
+  font-size: 26rpx;
+  border: 1rpx solid #CDCDCD;
+  border-radius: 10rpx;
+  background: #F2F2F2;
+  line-height: 50rpx;
+  text-align: center;
+}
+.detail{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100rpx;
+  width: 100%;
+  /* border: 1rpx solid #8f8c8c; */
+  margin-top: 30rpx;
+}
+.detail .pet{ 
+  height: 100rpx;
+  width: 100rpx;
+}
+.detail .user{
+  max-width:150rpx;
+}
+.detail .boy{
+  height: 60rpx;
+  width: 60rpx;
+}
+.detail .mark{
+  height: 60rpx;
+  width: 60rpx;
+  margin-left: 20rpx;
+}
+.detail .step{
+  margin-left: 120rpx;
+}
+.detail.state{
+  display: flex;
+  justify-content: start;
+  border-bottom: 1rpx solid #CDCDCD;
+}
+.pic{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 30rpx;
+}
+.pic image{
+  width: 100rpx;
+  height: 100rpx; 
+}
+.pic text{
+  margin-top: 35rpx;
+  font-size: 40rpx;
+}
+/* 按钮 */
+.btn{
+  width: 300rpx;
+  margin-top: 50rpx;
+}

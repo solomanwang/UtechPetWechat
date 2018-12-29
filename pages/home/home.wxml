@@ -1,0 +1,43 @@
+<map id="map" longitude="{{userLong}}" latitude="{{userLat}}" scale="{{scale}}" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location
+  style="width: 100%; height: {{windowHeight}}px;">
+  <block wx:if='{{animalVO.length < 1}}'>
+    <cover-view class='infor'>
+      <cover-view class='not'>
+        请先添加宠物~
+      </cover-view>
+    </cover-view>
+  </block>
+  <block wx:elif="{{animalVO.length > 0}}">
+    <cover-view class='infor' wx:for='{{animalVO}}'>
+      <cover-view class='inforcont'>
+        <cover-image class='pet' src='../../image/pet.png'></cover-image>
+        <cover-view class='name'>{{item.aname}}</cover-view>
+      </cover-view>
+      <cover-view class='bor'></cover-view>
+      <cover-view class='inforcom' wx:if='{{stepNum!=null}}'>
+        <cover-view>步数：</cover-view>
+        <cover-view>{{stepNum}}</cover-view>
+      </cover-view>
+      <cover-view class='inforcom' wx:elif='{{stepNum==null}}'>
+        <cover-view>没有绑定设备</cover-view>
+      </cover-view>
+    </cover-view>
+  </block>
+  <cover-view class='fence' bindtap='fenceTap'>
+    <cover-image src='../../image/fence.png'></cover-image>
+    <cover-view>电子围栏</cover-view>
+  </cover-view>
+  <cover-view class='track' bindtap='trackTap'>
+    <cover-image src='../../image/foot.png'></cover-image>
+    <cover-view>轨迹追踪</cover-view>
+  </cover-view>
+  <cover-view class='go step' bindtap='goTap' data-value='{{eqmNumber}}&GSS'>
+    狗狗步数
+  </cover-view>
+  <cover-view class='go hand' bindtap='goTap' data-value='{{eqmNumber}}&GS1'>
+    手动定位
+  </cover-view>
+  <cover-view class='go auto' bindtap='goTap' data-value='{{eqmNumber}}&GS2'>
+    自动追踪
+  </cover-view>
+</map>

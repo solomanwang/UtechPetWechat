@@ -1,0 +1,30 @@
+<!--pages/equip/add/add.wxml-->
+<view class='cont'>
+  <view class='conter'>
+    <view class='information'>
+      <image src='../../../image/pic.jpg'></image>
+      <view class='infor-detail'>
+        <view>
+          <text>设备号：</text>
+          <text class='number'>{{eqmNumber}}</text>
+        </view>
+        <view>
+          <text>型号：</text>
+          <text>{{modelName}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='phone'>
+      <text>手机号码：</text>
+      <input placeholder-class="place-holder" placeholder='请输入你的手机号码' bindinput='getPhoneValue' value='{{phone}}'></input>
+    </view>
+    <view class='code'>
+      <text bindtap='getVerificationCode' disabled='{{disabled}}'>{{codename}}</text>
+    </view>
+    <view class='phone'>
+      <text>验证码：</text>
+      <input placeholder-class="place-holder" placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'></input>
+    </view>
+  </view>
+</view>
+<button class='bind' bindtap='save'>绑定</button>

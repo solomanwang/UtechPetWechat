@@ -1,0 +1,26 @@
+<!--pages/equip/add/add.wxml-->
+<view class='cont'>
+  <view class='conter'>
+    <view class='information'>
+      <image src='../../../image/pic.jpg'></image>
+      <view class='infor-detail'>
+        <view>
+          <text>设备号：</text>
+          <text class='number'>{{eqmNumber}}</text>
+        </view>
+        <view>
+          <text>型号：</text>
+          <text>{{modelName}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='ever'>
+      <image class='img' src='../../../image/help1.svg'></image>
+      <view>
+        <text>该设备已经处于绑定</text>
+        <text>如需更换手机号码请先解绑。</text>
+      </view>
+    </view>
+  </view>
+</view>
+

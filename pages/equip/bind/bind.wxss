@@ -1,0 +1,63 @@
+/* pages/equip/add/add.wxss */
+.cont{
+  box-sizing: border-box;
+  height: 520rpx;
+  width: 90%;
+  border: 1rpx solid #dcdcdc;
+  border-radius: 20rpx;
+  background: #fff;
+  margin: auto;
+  margin-top: 100rpx;
+  padding: 40rpx;
+}
+.conter{
+  height: 100%;
+  white-space: 100%;
+  border-top: 1rpx solid #dcdcdc;
+}
+.information{
+  width: 100%;
+  height: 200rpx;
+  border: 1rpx solid #dcdcdc;
+  border-radius: 20rpx;
+  margin-top: 30rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.information image{
+  height: 150rpx;
+  width: 150rpx;
+}
+.information .infor-detail{
+  height: 200rpx;
+  width: 400rpx;
+  /* border: 1rpx solid #dcdcdc; */
+  font-size: 30rpx;
+}
+.information .infor-detail view{
+  margin-top: 40rpx;
+}
+.information .infor-detail view .number{
+  color: #dcdcdc;
+  margin-left: 30rpx;
+}
+
+/* ever信息 */
+.ever {
+  display: flex;
+  justify-content: start;
+  border-bottom: 1rpx solid #dcdcdc;
+  padding: 50rpx 30rpx;
+}
+.ever image{
+  height: 50rpx;
+  width: 50rpx;
+}
+.ever view{
+  margin-left: 30rpx
+}
+.ever view text{
+  display: block;
+  font-size: 35rpx;
+}

@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/equip/unbund/unbund",
+    "pages/equip/bind/bind",
+    "pages/pet/pet",
+    "pages/pet/edit/edit",
+    "pages/equip/equip",
+    "pages/equip/add/add",
+    "pages/home/fence/fence",
+    "pages/home/line/line",
+    "pages/pet/delete/delete"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#7ca627",
+    "backgroundColorTop":"#7ca627",
+    "navigationBarTitleText": "导宠",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#DBDBDB",
+    "backgroundColor": "#ffffff",
+    "selectedColor": "#7ca627",
+    "list": [
+      
+      {
+        "pagePath": "pages/pet/pet",
+        "text": "我的宠物",
+        "iconPath": "image/tab2.png",
+        "selectedIconPath": "image/tab2_active.png"
+      },
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "image/tab1.png",
+        "selectedIconPath": "image/tab1_active.png"
+      },
+      {
+        "pagePath": "pages/equip/equip",
+        "text": "我的设备",
+        "iconPath": "image/tab3.png",
+        "selectedIconPath": "image/tab3_active.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}

@@ -1,0 +1,76 @@
+<!--pages/pet/edit/edit.wxml-->
+<button class='delete' catchtap='deleteTap'>删除</button>
+<view class='cont'>
+  <view class='pet' catchtap='imageTap'>
+    <image src='../../../image/pet.svg'></image>
+  </view> 
+  <view class='key'>
+    <text class='left'>姓名：</text>   
+    <input bindinput='getNameValue' value='{{animal.aname}}'>{{animal.aname}}</input>
+  </view>
+  <view class='key'>
+    <text class='left'>品种：</text>
+    <!-- <input placeholder-style="font-size:30rpx" placeholder='选择品种'> -->
+    <view class="row-wrap">
+      <picker bindchange="bindCasPickerChange" value="{{casIndex}}" range="{{casArray}}" range-key="varietiesName">
+        <view>
+          <text>{{casArray[casIndex].varietiesName}}</text>
+        </view>
+      </picker>
+    </view>    
+    <!-- </input> -->
+  </view>
+  <view class='key age'>
+    <text class='left age'>年龄：</text>
+    <input bindinput='getAgeValue' value='{{animal.age}}'></input>
+    <text class='age'>周岁</text>
+  </view>
+  <view class='key'>
+    <text class='left sex'>性别：</text>
+    <image src='../../../image/girl.svg'></image>
+    <radio-group bindchange="radioChange">
+      <label>
+        <radio value='1' checked='{{animal.checked.wman}}'></radio>
+        <radio value='2' checked='{{animal.checked.man}}' class='boysex'></radio>   
+      </label>
+    </radio-group>
+    <image src='../../../image/boy.svg'></image>
+  </view>
+  <view id='ever' class='phone_personal information' bindtap="clickPerson" wx:if='{{IsUndefind>0}}'>
+    <image src='../../../image/pic.jpg'></image>
+      <view class='infor-detail'>
+        <view>
+          <text>设备号：</text>
+          <text class='number'>{{animal.eqm.eqmNumber}}</text>
+        </view>
+        <view>
+          <text>设备状态：</text>
+          <text>已绑定</text>
+        </view>
+      </view>
+      <button class='untie' catchtap='untieTap'>解绑</button>
+  </view>  
+  <view class="phone_personal" bindtap="clickPerson" wx:else>
+    <image src='{{img}}'></image>
+    <view class='infor-detail'>
+      <text>设备号：</text>
+      <text class='number'>{{eqmNumberNew}}</text>
+    </view>
+  </view>
+  <view class="phone_select" hidden="{{selectPerson}}">
+    <view class='information select_one' wx:for='{{arr}}' catchtap='mySelect' data-eqmNumber='{{item.eqmNumber}}' data-phoneId='{{item.phoneId}}' data-img='../../../image/pic.jpg'>
+      <image src='../../../image/pic.jpg'></image>
+      <view class='infor-detail'>
+        <view>
+          <text>设备号：</text>
+          <text class='number'>{{item.eqmNumber}}</text>
+        </view>
+        <view>
+          <text>设备状态：</text>
+          <text>未绑定</text>
+        </view>
+      </view>
+      </view>
+  </view>
+</view>
+<button class='save' bindtap='saveTap'>保存</button>
