@@ -1,5 +1,7 @@
 // pages/pet/edit/edit.js
 var app = getApp();
+const util = require('../../../utils/util.js')
+const animalUtil = require('../../../utils/animal.js')
 Page({
   /**
    * 页面的初始数据
@@ -9,7 +11,8 @@ Page({
     eqmNumberNew: '绑上我的项圈',
     selectArea: false,
     showView: false,
-    nickName: "",
+    // nickName: "",//宠物名
+    varietiesName: "",//品种名
     avatarUrl: "",
     casArray: [],
     userName: '',
@@ -18,49 +21,28 @@ Page({
     casIndex: 0,
     eqmNumber: '',
     phoneId: '',
-    arr: []
-  },
-  //选择品种
-  bindCasPickerChange: function (e) {
-    app.data.varietiesName = this.data.casArray[e.detail.value].varietiesName;
-    this.setData({
-      casIndex: e.detail.value
-    })
-    console.log('casIndex' + this.data.casIndex)
-    console.log('hahahahhaahaah'+app.data.varietiesName)
-  },
-  onLoad:function(){
-    var that = this;
-    //从缓存中拉取品种信息如果
-    wx.clearStorage();//清除缓存
-    wx.getStorage({
-      key: 'varieties',
-      success: function(res) {
-        console.log("-----品种---缓存有")
-        console.log(res)
-        that.setData({
-          casArray : res.data
-        })
-      },
-      fail:function(res){
-      }
-    })
-    console.log("casArray = " + this.data.casArray)
-    if (this.data.casArray === null || this.data.casArray.lenght == 'undefined'){
-      console.log("-----品种---缓存无")
-      let arr = that.getVarieties(1, that.callback)
-      console.log(arr)
-      that.setData({
-        casArray: arr 
-      })
-
-      //存入缓存
-      wx.setStorage({
-        key: 'varieties',
-        data: that.casArray,
-      })
+    date: '选择日期',
+    animal:{
+      'openId': '',
+      'aheadImg': '',
+      'aname': '',
+      'varietiesName': '',
+      'age': '',
+      'asex': '',
+      'eqmNumber': '',
+      'phoneId': '',
     }
-     
+  },
+  
+  /** -----------------------------------------------onLoad--------------------------------------------------- */
+  onLoad:function(options){
+    var that = this;
+    console.log('options = ', options);
+    //从缓存中拉取品种信息如果
+    that.setData({
+      casArray:app.data.casArray
+    })
+    // this.data.animal.varietiesName = '中华田园犬';
   },
   /** -----------------------------------------------onShow--------------------------------------------------- */
   onShow: function (options) {
@@ -87,13 +69,8 @@ Page({
     //   }
     // }) 
   },
-  onChangeShowState: function () {
-    var that = this;
-    that.setData({
-      showView: (!that.data.showView)
-    })
-  },
-// 上传图片
+
+  // 上传图片
   imageTap: function(){
     wx.chooseImage({
       count: 1, // 默认9
@@ -107,23 +84,7 @@ Page({
       }
     })
   },
-  // 页面中传过来的值（姓名，品种，年龄性别等）
-  getNameValue: function (e) {
-    this.data.getNameValue = e.detail.value;
-    console.log(this.data.getNameValue);
-  },
-  classifyTap: function (e) {
-    console.log(e.currentTarget.dataset.casArray);
-  },
-  getAgeValue: function (e) {
-    this.data.getAgeValue = e.detail.value;
-    console.log(this.data.getAgeValue);
-  },
-  // 单选框的内容
-  // 1表示母，2表示公；
-  radioChange: function (e) {
-    app.data.asex = e.detail.value;
-  },
+  
   // 宠物绑定设备获取信息
   // bindTap: function(e){
   //   this.setData({
@@ -165,95 +126,47 @@ Page({
     app.data.eqmNumberNew = eqmNumberNew;
     app.data.phoneId = phoneId
   },
-  // 保存
+  // 增加宠物
   saveTap: function (e) {
-    var index = this.data.casIndex;
-    var casArray = this.data.casArray;
-    var aname = this.data.getNameValue;
-    var aheadImg = app.data.tempFilePaths;
-    var varietiesName = casArray[index].varietiesName;
-    var age = this.data.getAgeValue;
-    var asex = app.data.asex;
-    var eqmNumber = this.data.eqmNumberNew;
-    var phoneId = this.data.phoneId;
-    console.log('casIndex' + this.data.casIndex)
-    console.log('anameaname' + aname)
-    console.log('age' + age)
-    console.log('asex' + asex)
-    console.log('varietiesName' + varietiesName)
-    console.log('eqmNumber' + eqmNumber)
-    console.log('phoneId****' + phoneId)
-    if (aname != undefined & aname != '' & age != undefined & age != '' & asex != undefined & asex != '' & varietiesName != undefined & varietiesName != '') {
-      wx.request({
-        url: app.globalData.httpUrl + '/MiniProgram/addAnimal.do',
-        data: {
-          'openId': app.data.openId,
-          'aheadImg': aheadImg,
-          'aname': aname,
-          'varietiesName': varietiesName,
-          'age': age,
-          'asex': app.data.asex,
-          'eqmNumber': eqmNumber,
-          'phoneId': phoneId,
-        },
-        method: 'POST',
-        // header: {
-        //   'content-type': 'application/x-www-form-urlencoded' // 默认值
-        // },
-        success: function (res) {
-          console.log(varietiesName)
-          console.log(res.data)
-          wx.switchTab({
-            url: '../../home/home',   //注意switchTab只能跳转到带有tab的页面，不能跳转到不带tab的页面
-          })
-        },
-        fail: function (res) {
-        }
-      })
-    } else if (aname == undefined) {
-      wx.showToast({
-        title: '名字不能为空',
-        icon: 'false',
-        duration: 2000
-      })
-    } else if (age == undefined) {
-      wx.showToast({
-        title: '年龄不能为空',
-        icon: 'false',
-        duration: 2000
-      })
-    } else if (asex == '') {
-      wx.showToast({
-        title: '性别不能为空',
-        icon: 'false',
-        duration: 2000
-      })
-    } else if (varietiesName == undefined) {
-      wx.showToast({
-        title: '品种不能为空',
-        icon: 'false',
-        duration: 2000
-      })
+    let animalVO = this.data.animal;
+    // 判断用户信息填写
+    let flag = animalUtil.checkForm(animalVO);
+    console.log('flag = ',flag)
+    if (flag) {    
+      console.log('封装好的宠物对象值：', animalVO)
+      animalVO.openId = app.data.openId;
+      animalUtil.sendAnimalVO(animalVO, 'POST');//添加宠物对象  
+    }else{//信息系填写正确，获取animal对象发送请求
+      console.log('不能发送')
     }
   },
-  //获取狗狗品种
-  getVarieties:function(parentId,callback){
-    //如果没有缓存从数据库拉取放入缓存
-    wx.request({
-      url: app.globalData.httpUrl + '/MiniProgram/findVarieties.do',
-      data: {
-        'parentId': parentId
-      },
-      method: 'GET',
-      success: function (res) {
-        callback(res.data)
-      },
-    }) 
-  }
-  ,
-  callback:function(res){//回调函数
-    console.log(res)
-    return res
-  }
-
+  //选择品种
+  bindCasPickerChange: function (e) {
+    this.setData({
+      varietiesName: this.data.casArray[e.detail.value].varietiesName,
+      casIndex:e.detail.value
+    })
+    this.data.animal.varietiesName = this.data.casArray[e.detail.value].varietiesName
+    console.log('选择的品种是：', this.data.animal.varietiesName)
+  },
+  //日期选择器
+  bindDateChange: function (e) {
+    this.data.animal.age = e.detail.value
+    console.log('选择的时间为', this.data.animal.age)
+    this.setData({
+      date: e.detail.value
+    })
+  },
+// 页面中传过来的值（姓名，品种，年龄性别等）
+  getNameValue: function (e) {
+    this.data.animal.aname = e.detail.value;
+  },
+  classifyTap: function (e) {
+    console.log(e.currentTarget.dataset.casArray);
+  },
+  // 获取宠物性别
+  // 1表示母，2表示公；
+  radioChange: function (e) {
+    this.data.animal.asex = e.detail.value;
+  },
 })

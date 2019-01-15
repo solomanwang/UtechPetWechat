@@ -8,6 +8,7 @@ App({
     modelName: '',
     eqmImg: '',
     animalVO: [],//宠物vo对象
+    casArray: [],
     stepNum: "",
     openId: '',//
     list: '',
@@ -27,7 +28,7 @@ App({
   globalData: {
     appid: 'wx91b2cf461c56fd3c', //appid需自己提供，此处的appid我随机编写
     secret: '9ed7df070d5766b4d03137fe3a5a5718', //secret需自己提供，此处的secret我随机编写
-    httpUrl: "http://192.168.0.89:8083",
+    httpUrl: "http://127.0.0.1:8083",
     websocketUrl: 'www.ai-ray.cn:8082'
     // httpUrl: "http://118.24.243.241:8083",
     // websocketUrl: '118.24.243.241:8082'

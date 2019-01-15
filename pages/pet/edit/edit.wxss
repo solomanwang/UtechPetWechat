@@ -39,6 +39,7 @@
 .key input{
   width: 250rpx;
   border-bottom: 1rpx solid #D7D7D7;
+
 }
 .key .row-wrap{
   width: 250rpx;
@@ -48,7 +49,7 @@
   white-space:nowrap; 
 }
 .left.age{
-  margin-left: 80rpx;
+  margin-left: 40rpx;
 }
 .key image{
   height: 50rpx;

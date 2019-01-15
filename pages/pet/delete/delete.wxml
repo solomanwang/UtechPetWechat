@@ -8,6 +8,7 @@
     <text class='left'>姓名：</text>   
     <input bindinput='getNameValue' value='{{animal.aname}}'>{{animal.aname}}</input>
   </view>
+
   <view class='key'>
     <text class='left'>品种：</text>
     <!-- <input placeholder-style="font-size:30rpx" placeholder='选择品种'> -->
@@ -20,11 +21,16 @@
     </view>    
     <!-- </input> -->
   </view>
-  <view class='key age'>
-    <text class='left age'>年龄：</text>
-    <input bindinput='getAgeValue' value='{{animal.age}}'></input>
-    <text class='age'>周岁</text>
+  <!-- 更改为日期选择器 -->
+  <view class="key">
+    <view class="left">生日：</view>
+      <view class="row-wrap">
+      <picker mode="date" value="{{date}}" start="2015-09-01" end="2019-01-01" bindchange="bindDateChange">
+        <view class="picker">{{date}}</view>
+      </picker>
+    </view>
   </view>
+
   <view class='key'>
     <text class='left sex'>性别：</text>
     <image src='../../../image/girl.svg'></image>

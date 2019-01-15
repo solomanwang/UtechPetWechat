@@ -141,12 +141,9 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       success: function (res) {
+        console.log(res.data)
         that.setData({
-          arr: res.data.data
-        })
-        var array = res.data.data;
-        that.setData({
-          arrLen: array.length,
+          arr: res.data
         })
       }
     })

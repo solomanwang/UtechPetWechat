@@ -4,9 +4,11 @@
     <image src='../../../image/pet.svg'></image>
   </view> 
   <view class='key'>
-    <text class='left'>姓名：</text>
+    <text class='left'>名字：</text>
     <input bindinput='getNameValue' value='{{name}}'>{{aname}}</input>
   </view>
+
+  <!-- 普通选择器 -->
   <view class='key'>
     <text class='left'>品种：</text>
     <!-- <input placeholder-style="font-size:30rpx" placeholder='选择品种'> -->
@@ -19,10 +21,14 @@
     </view>
     <!-- </input> -->
   </view>
-  <view class='key age'>
-    <text class='left age'>年龄：</text>
-    <input bindinput='getAgeValue' value='{{ages}}'>{{age}}</input>
-    <text class='age'>周岁</text>
+  <!-- 更改为日期选择器 -->
+  <view class="key">
+    <view class="left">生日：</view>
+      <view class="row-wrap">
+      <picker mode="date" value="{{date}}" start="2015-09-01" end="2019-01-01" bindchange="bindDateChange">
+        <view class="picker">{{date}}</view>
+      </picker>
+    </view>
   </view>
   <view class='key'>
     <text class='left sex'>性别：</text>
@@ -30,30 +36,11 @@
     <radio-group bindchange="radioChange">
       <label>
         <radio value='1'></radio>
-        <radio value='2' class='boysex'></radio>      
+        <radio value='2' class='boysex'></radio>    
       </label>
     </radio-group>
     <image src='../../../image/boy.svg'></image>
   </view>
-  <!-- <view id='box' class="view_hide{{showView?'view_show':''}}">
-       <view class='information' wx:for='{{arr}}'>
-        <image src='../../../image/pic.jpg'></image>
-        <view class='infor-detail'>
-          <view>
-            <text>设备号：</text>
-            <text class='number'>{{item.eqmNumber}}</text>
-          </view>
-          <view>
-            <text>设备状态：</text>
-            <text>未绑定</text>
-          </view>
-        </view>
-        <button class='untie' catchtap='bindTap' data-eqmNumber='{{item.eqmNumber}}' data-phoneId='{{item.phoneId}}'>绑定</button>
-       </view>
-  </view>
-  <view class='tie' bindtap="onChangeShowState">
-    {{showView?'绑上我的项圈':'绑上我的项圈'}}   
-  </view> -->
   <view class="phone_personal" bindtap="clickPerson">
     <image src='{{img}}'></image>
     <view class='infor-detail'>

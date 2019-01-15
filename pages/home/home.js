@@ -1,5 +1,6 @@
 // pages/home/home.js
-var app=getApp();
+var app = getApp();
+const aniamalUtil = require('../../utils/animal.js')
 //经纬度转换参数
 var pi = 3.1415926535897932384626
 var a = 6378245.0;
@@ -14,72 +15,63 @@ Page({
     userLong: "",
     markers: [],
     stepNum: "今日步数",
-    animalVO:[],
-    eqmNumber:''
+    animalVO: [],
+    eqmNumber: ''
   },
   /**
    * 生命周期函数--监听页面加载 
    * 
    */
-  onLoad: function () {
+  onLoad: function() {
     console.log("----------onLoad-------")
     var that = this;
     /**
      * 获取宠物信息-参数为openId
      * */
-    app.getOpenId().then(function(res){
+    app.getOpenId().then(function(res) {
       console.log(res);
-      if(res.status == 200){
+      if (res.status == 200) {
         //请求用户的宠物对象，参数为openId
         console.log("open_id = " + app.data.openId);
         wx.request({
           url: app.globalData.httpUrl + '/MiniProgram/findAllAnimal.do',
           method: 'POST',
           data: app.data.openId,
-          // data: "sdfsdsfdfsdf",
-          success: function (res) {
+          success: function(res) {
             console.log('宠物对象响应');
             app.data.animalVO = res.data;
             console.log(app.data.animalVO);
             //未查到宠物信息弹窗提示
-            if (res.statusCode == 404) {
-              wx.showToast({
-                title: '你还未添加动物',
-                icon: 'none',
-                duration: 1000,
-                mask:true
-              })
-            //查询到宠物信息setData
-            }else if(res.statusCode == 200){
+            if (res.statusCode == 200) {
               that.setData({
                 animalVO: res.data,
               })
               //判断宠物是否绑定设备，如果有将第一个设备号取出
               var num = res.data[0].eqmNumber;
-                console.log('key' + num);
+              console.log('key' + num);
               if (num != null) {
-                app.data.eqmNumber = num//设置app全局变量
-                that.setData({//设备本页面变量
-                  eqmNumber:num
+                app.data.eqmNumber = num //设置app全局变量
+                that.setData({ //设备本页面变量
+                  eqmNumber: num
                 })
               }
             }
           }
         })
-      }else{
+      } else {
         console.log(res.data)
       }
     })
 
-      // 如果查询出eqmNumber进行websocket连接
-      if(this.data.eqmNumber != null){
+    // 如果查询出eqmNumber进行websocket连接
+    if (this.data.eqmNumber != null) {
       wx.connectSocket({
-        url: 'ws://'+app.globalData.websocketUrl,
+        url: 'ws://' + app.globalData.websocketUrl,
       })
-        }
-      
+    }
+
     // websocket连接成功回调函数
-    wx.onSocketOpen(function () {
+    wx.onSocketOpen(function() {
       wx.showToast({
         title: '服务器连接成功',
         icon: 'success',
@@ -88,42 +80,45 @@ Page({
       console.log("websocket已经连接")
     })
     // websocket连接失败回调
-    wx.onSocketError(function (res) {
+    wx.onSocketError(function(res) {
       console.log('WebSocket连接打开失败，请检查！')
-    }) 
+    })
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onShow: function () {
+  onShow: function() {
     console.log("----------onShow-------")
     var that = this;
+    that.setData({
+      animalVO: app.data.animalVO
+    })
     type: 'gcj02',
       //程序打开加载地图组件
       wx.getLocation({
-        success: function (res) {
+        success: function(res) {
           that.setData({
             userLat: res.latitude,
             userLong: res.longitude,
           })
         }
       })
-      // 获取手机屏幕高度
+    // 获取手机屏幕高度
     wx.getSystemInfo({
-      success: function (res) {
+      success: function(res) {
         that.setData({
           windowHeight: res.windowHeight,
         })
       }
     })
-    
+
     //监听socket连接是否关闭，关闭自动重新建立连接
     if (this.data.eqmNumber != null) {
-      wx.onSocketClose(function (res) {
+      wx.onSocketClose(function(res) {
         console.log("连接断开，开始重新连接")
         wx.connectSocket({
           url: 'ws://' + app.globalData.websocketUrl,
-          success: function (res) {
+          success: function(res) {
             console.log("重新连接成功")
             wx.showToast({
               title: '重新连接成功',
@@ -136,7 +131,7 @@ Page({
     }
 
     //接收到服务器回传数据
-    wx.onSocketMessage(function (res) {
+    wx.onSocketMessage(function(res) {
       console.log('收到服务器内容：' + res.data)
       //截取回传指令判断进入哪个方法
       let data = res.data;
@@ -148,38 +143,38 @@ Page({
         that.setData({
           stepNum: parseInt(arr[0])
         })
-      } else if (cum == 'GPS') {//获取GPS数据
+      } else if (cum == 'GPS') { //获取GPS数据
         //获取map上下文添加marker
         that.getCenterLocation(data);
-      } else if (cum == 'CLO') {//设备关闭
+      } else if (cum == 'CLO') { //设备关闭
         console.log("设备关闭")
         wx.showToast({
           title: '设备关闭',
           icon: 'error',
           duration: 2000
         })
-      } else if (cum == 'OPE') {//设备开启
+      } else if (cum == 'OPE') { //设备开启
         console.log("设备开启")
         wx.showToast({
           title: '设备打开',
           icon: 'success',
           duration: 2000
         })
-      } else if (cum == 'OUT') {//设备开启
+      } else if (cum == 'OUT') { //设备开启
         console.log("与服务器断开")
         wx.showToast({
           title: '与服务器断开',
           icon: 'error',
           duration: 2000
         })
-      } else if (cum == 'CON') {//设备开启
+      } else if (cum == 'CON') { //设备开启
         console.log("与服务器连接")
         wx.showToast({
           title: '与服务器连接',
           icon: 'success',
           duration: 2000
         })
-      } else if (cum == 'NEQ') {//设备开启
+      } else if (cum == 'NEQ') { //设备开启
         console.log("设备未打开")
         wx.showToast({
           title: '设备未打开',
@@ -189,14 +184,14 @@ Page({
       }
     })
   },
-  onReady: function () {
+  onReady: function() {
     this.mapCtx = wx.createMapContext("map");
   },
   //获取当前地图中心的经纬度，返回的是 gcj02 坐标系
-  getCenterLocation: function (data) {
+  getCenterLocation: function(data) {
     var that = this
     this.mapCtx.getCenterLocation({
-      success: function (res) {
+      success: function(res) {
         that.setData({
           userLat: res.longitude,
           userLong: res.latitude,
@@ -207,7 +202,7 @@ Page({
     })
   },
   //解析gps经纬度
-  paresLatAndLong: function (e) {
+  paresLatAndLong: function(e) {
     //GPS29.805230,106.397880NE9
     let arr = e.split(",")
     let lat = arr[0].slice(3, arr[0].length)
@@ -238,23 +233,22 @@ Page({
   },
   regionchange(e) {
     // 地图发生变化的时候，获取中间点，也就是用户选择的位置
-    if (e.type == 'end') {
-    }
+    if (e.type == 'end') {}
   },
   // 跳到电子围栏页
-  fenceTap: function () {
+  fenceTap: function() {
     wx.navigateTo({
       url: '/pages/home/fence/fence',
     })
   },
   // 跳到轨迹追踪页
-  trackTap: function () {
+  trackTap: function() {
     wx.navigateTo({
       url: '/pages/home/line/line',
     })
   },
   //wgs84坐标转换gcj02坐标
-  wgs84ToGcj02: function (lat, lon) {
+  wgs84ToGcj02: function(lat, lon) {
     // if (outOfChina(lat, lon)) { return null; }
     let dLat = this.transformLat(lon - 105.0, lat - 35.0);
     let dLon = this.transformLon(lon - 105.0, lat - 35.0);
@@ -270,14 +264,14 @@ Page({
     return local;
   },
 
-  transformLat: function (x, y) {
+  transformLat: function(x, y) {
     let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
     ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0;
     ret += (20.0 * Math.sin(y * pi) + 40.0 * Math.sin(y / 3.0 * pi)) * 2.0 / 3.0;
     ret += (160.0 * Math.sin(y / 12.0 * pi) + 320 * Math.sin(y * pi / 30.0)) * 2.0 / 3.0;
     return ret;
   },
-  transformLon: function (x, y) {
+  transformLon: function(x, y) {
     let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
     ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0;
     ret += (20.0 * Math.sin(x * pi) + 40.0 * Math.sin(x / 3.0 * pi)) * 2.0 / 3.0;
@@ -285,11 +279,11 @@ Page({
     return ret;
   },
   //发送websocket指令给设备
-  goTap: function (e) {
+  goTap: function(e) {
     console.log("发送指令" + e.currentTarget.dataset.value)
     wx.sendSocketMessage({
       data: e.currentTarget.dataset.value,
-      fail: function (res) {
+      fail: function(res) {
         wx.showToast({
           title: '发送失败',
           icon: 'error',
@@ -297,5 +291,39 @@ Page({
         })
       }
     })
-  }
+  },
+
+  // wx.request({  页面加载向后台发送请求宠物信息
+  //   url: app.globalData.httpUrl + '/MiniProgram/findAllAnimal.do',
+  //   method: 'POST',
+  //   data: app.data.openId,
+  //   success: function (res) {
+  //     console.log('宠物对象响应');
+  //     app.data.animalVO = res.data;
+  //     console.log(app.data.animalVO);
+  //     //未查到宠物信息弹窗提示
+  //     if (res.statusCode == 404) {
+  //       wx.showToast({
+  //         title: '你还未添加动物',
+  //         icon: 'none',
+  //         duration: 1000,
+  //         mask: true
+  //       })
+  //       //查询到宠物信息setData
+  //     } else if (res.statusCode == 200) {
+  //       that.setData({
+  //         animalVO: res.data,
+  //       })
+  //       //判断宠物是否绑定设备，如果有将第一个设备号取出
+  //       var num = res.data[0].eqmNumber;
+  //       console.log('key' + num);
+  //       if (num != null) {
+  //         app.data.eqmNumber = num//设置app全局变量
+  //         that.setData({//设备本页面变量
+  //           eqmNumber: num
+  //         })
+  //       }
+  //     }
+  //   }
+  // })
 })

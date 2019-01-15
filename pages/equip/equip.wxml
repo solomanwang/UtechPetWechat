@@ -1,11 +1,11 @@
  <!--pages/equip/equip.wxml-->
-<block wx:if="{{arrLen==0}}">
+<block wx:if="{{arr.length < 1}}">
   <view class='port'>
     <image src='../../image/not.svg'></image>
     <text>您还没有绑定设备</text>
   </view>
 </block>
-<block wx:elif='{{arrLen>0}}'>
+<block wx:elif='{{arr.length >= 1}}'>
   <view class='my' wx:for='{{arr}}'>
     <view class='myintro'>
       <image src='../../image/pic.jpg'> </image>

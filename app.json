@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/pet/pet",
     "pages/home/home",
     "pages/equip/unbund/unbund",
     "pages/equip/bind/bind",
-    "pages/pet/pet",
     "pages/pet/edit/edit",
     "pages/equip/equip",
     "pages/equip/add/add",
