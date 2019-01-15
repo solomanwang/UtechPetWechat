@@ -41,23 +41,39 @@
     </radio-group>
     <image src='../../../image/boy.svg'></image>
   </view>
-  <view class="phone_personal" bindtap="clickPerson">
+  <!-- 绑定项圈后展示 -->
+  <view id='ever' class='phone_personal information' bindtap="clickPerson" wx:if='{{eqm}}'>
+    <image src='../../../image/pic.jpg'></image>
+      <view class='infor-detail'>
+        <view>
+          <text>设备号：</text>
+          <text class='number'>{{eqm.eqmNumber}}</text>
+        </view>
+        <view>
+          <text>型号：</text>
+          <text>{{eqm.modelName}}</text>
+        </view>
+      </view>
+      <button class='untie' catchtap='untieTap'>解绑</button>
+  </view> 
+  <!-- 绑定项圈前 -->
+  <view class="phone_personal" bindtap="clickPerson" wx:else>
     <image src='{{img}}'></image>
     <view class='infor-detail'>
       <text class='number'>{{eqmNumberNew}}</text>
     </view>
   </view>
   <view class="phone_select" hidden="{{selectPerson}}">
-    <view class='information select_one' wx:for='{{arr}}' catchtap='mySelect' data-eqmNumber='{{item.eqmNumber}}' data-phoneId='{{item.phoneId}}' data-img='../../../image/pic.jpg'>
+    <view class='information select_one' catchtap='mySelect' 
+    data-number='{{newEqm.eqmNumber}}' data-modelName='{{newEqm.modelName}}' data-img='../../../image/pic.jpg'>
       <image src='../../../image/pic.jpg'></image>
       <view class='infor-detail'>
         <view>
           <text>设备号：</text>
-          <text class='number'>{{item.eqmNumber}}</text>
+          <text class='number'>{{newEqm.eqmNumber}}</text>
         </view>
         <view>
-          <text>设备状态：</text>
-          <text>未绑定</text>
+          <text>型号：{{newEqm.modelName}}</text>
         </view>
       </view>
       </view>

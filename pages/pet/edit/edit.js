@@ -2,6 +2,9 @@
 var app = getApp();
 const util = require('../../../utils/util.js')
 const animalUtil = require('../../../utils/animal.js')
+const httpUtil = require('../../../utils/httpUtil.js')
+const findEqmUrl = app.globalData.HTTP_URL + '/MiniProgram/EqmByPhone'
+const addAnimalUrl = app.globalData.HTTP_URL + '/MiniProgram/animal'
 Page({
   /**
    * 页面的初始数据
@@ -19,28 +22,33 @@ Page({
     mobile: '',
     Gender: 'female',
     casIndex: 0,
-    eqmNumber: '',
     phoneId: '',
     date: '选择日期',
     animal:{
-      'openId': '',
-      'aheadImg': '',
+      'headImg': '',
       'aname': '',
-      'varietiesName': '',
-      'age': '',
+      'varietiesName': '中华田园犬',
+      'birthday': '',
       'asex': '',
       'eqmNumber': '',
       'phoneId': '',
-    }
+    },
+    eqm: {
+      eqmNumber: "",
+      phoneId: "",
+      modelName: "",
+      eqmImg: ""
+    },
   },
   
   /** -----------------------------------------------onLoad--------------------------------------------------- */
   onLoad:function(options){
     var that = this;
-    console.log('options = ', options);
+    console.log('eqm = ', that.data.eqm);
     //从缓存中拉取品种信息如果
     that.setData({
-      casArray:app.data.casArray
+      casArray:app.data.casArray,
+      eqm:null
     })
     // this.data.animal.varietiesName = '中华田园犬';
   },
@@ -51,23 +59,9 @@ Page({
       image: "image",
       aname: "aname",
       varietiesName: "varietiesName",
-      age: "age",
+      birthday: "birthday",
       asex: "asex"
     })
-
-    // 获取所有未绑定宠物的设备
-    // wx.request({
-    //   url: app.globalData.httpUrl + '/MiniProgram/findEqmByStatus.do',
-    //   data: {
-    //     "openId": app.data.openId,
-    //   },
-    //   method: 'POST',
-    //   success: function (res) {
-    //     that.setData({
-    //       arr: res.data.data
-    //     })
-    //   }
-    // }) 
   },
 
   // 上传图片
@@ -84,62 +78,98 @@ Page({
       }
     })
   },
-  
-  // 宠物绑定设备获取信息
-  // bindTap: function(e){
-  //   this.setData({
-  //     eqmNumber: e.currentTarget.dataset.eqmnumber,
-  //     phoneId: e.currentTarget.dataset.phoneid
-  //   })
-  //   console.log("eqm*********************" + e.currentTarget.dataset.eqmnumber)
-  //   console.log("phoneId********************" + e.currentTarget.dataset.phoneid) 
-  // },
-  //点击选择类型
+
+  //查询用户的设备信息
   clickPerson: function () {
+    var that = this;
     var selectPerson = this.data.selectPerson;
+
     if (selectPerson == true) {
-      this.setData({
-        selectArea: true,
-        selectPerson: false,
+      //查询未关联宠物的设备
+      httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone).then(function (res) {
+        that.setData({
+          selectArea: true,
+          selectPerson: false,
+          newEqm: res.data
+        })
       })
+
     } else {
-      this.setData({
+      that.setData({
         selectArea: false,
         selectPerson: true,
       })
     }
   },
+  
   //点击切换  宠物绑定设备获取信息
   mySelect: function (e) {
-    var eqmNumberNew = e.currentTarget.dataset.eqmnumber;
-    var phoneId = e.currentTarget.dataset.phoneid;
-    var img = e.currentTarget.dataset.img;
-    this.setData({
-      eqmNumberNew: eqmNumberNew,
-      phoneId: phoneId,
-      img: img,
+    console.log(e)
+    var that = this;
+    that.data.animal.eqmNumber = e.currentTarget.dataset.number;
+    let _eqm = {
+      eqmNumber: e.currentTarget.dataset.number,
+      modelName: e.currentTarget.dataset.modelname,
+      eqmImg: e.currentTarget.dataset.img
+    }
+    that.setData({
+      eqm: _eqm,
       selectPerson: true,
       selectArea: false,
     })
-    console.log("eqm" + eqmNumberNew)
-    console.log("phoneId" + phoneId)
-    app.data.eqmNumberNew = eqmNumberNew;
-    app.data.phoneId = phoneId
+  },
+
+  //解除设备与宠物的关联
+  untieTap: function (e) {
+    this.data.animal.eqmNumber = null;
+    this.setData({
+      eqm: null
+    })
   },
   // 增加宠物
   saveTap: function (e) {
     let animalVO = this.data.animal;
+    animalVO.aname = '锤子了';
     // 判断用户信息填写
     let flag = animalUtil.checkForm(animalVO);
     console.log('flag = ',flag)
     if (flag) {    
+      //添加手机号码
+      animalVO.phoneId = app.data.user.phone;
       console.log('封装好的宠物对象值：', animalVO)
-      animalVO.openId = app.data.openId;
-      animalUtil.sendAnimalVO(animalVO, 'POST');//添加宠物对象  
+      httpUtil.promiseHttp(addAnimalUrl, 'POST', animalVO)
+      .then(function(res){
+        let _eqmNumber = res.data.eqmNumber;
+        // 跳转pet页面
+        if (res.statusCode == 201 || res.statusCode == 200) {
+      // 返回的宠物对象推送到app.data.animalVO.push(res)
+          app.data.animalVO.forEach((value, index, array) => {
+            //设备号更新
+            if (_eqmNumber == value.eqmNumber && value.animalId != res.data.animalId) {
+              array[index].eqmNumber = null;
+            }
+          })
+          app.data.animalVO.push(res.data)
+          wx.switchTab({
+            url: '../../pet/pet',   //注意switchTab只能跳转到带有tab的页面，不能跳转到不带tab的页面
+          })
+        } else {
+          wx.showToast({
+            title: '操作失败',
+            icon: 'false',
+            duration: 1000
+          })
+        }
+      }).catch(function(res){
+        console.log('error:',res)
+      })
+
     }else{//信息系填写正确，获取animal对象发送请求
       console.log('不能发送')
     }
   },
+
+
   //选择品种
   bindCasPickerChange: function (e) {
     this.setData({
@@ -151,15 +181,16 @@ Page({
   },
   //日期选择器
   bindDateChange: function (e) {
-    this.data.animal.age = e.detail.value
-    console.log('选择的时间为', this.data.animal.age)
+    this.data.animal.birthday = e.detail.value
+    console.log('选择的时间为', this.data.animal.birthday)
     this.setData({
       date: e.detail.value
     })
   },
 // 页面中传过来的值（姓名，品种，年龄性别等）
   getNameValue: function (e) {
-    this.data.animal.aname = e.detail.value;
+    // this.data.animal.aname = e.detail.value;
+    this.data.animal.aname = '垂直了';
   },
   classifyTap: function (e) {
     console.log(e.currentTarget.dataset.casArray);

@@ -35,7 +35,7 @@
 .detail{
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   height: 100rpx;
   width: 100%;
   /* border: 1rpx solid #8f8c8c; */
@@ -46,9 +46,11 @@
   width: 100rpx;
 }
 .detail .user{
+  margin-left: 40rpx;
   max-width:150rpx;
 }
 .detail .boy{
+  margin-left: 5rpx;
   height: 60rpx;
   width: 60rpx;
 }
@@ -58,7 +60,12 @@
   margin-left: 20rpx;
 }
 .detail .step{
-  margin-left: 120rpx;
+  /* border: 1px solid red; */
+  flex-grow:1;
+  margin-left: 20rpx;
+}
+.detail .birthday{
+  margin-right: 5rpx;
 }
 .detail.state{
   display: flex;

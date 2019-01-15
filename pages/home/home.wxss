@@ -114,8 +114,8 @@
   width: 150rpx;
   line-height: 45rpx;
   text-align: center;
-  background: #7ca627;
-  border: 1rpx solid #7ca627;
+  background: #f8801d;
+  border: 1rpx solid #f8801d;
   color: #fff;
   padding: 20rpx;
   border-radius: 20rpx;

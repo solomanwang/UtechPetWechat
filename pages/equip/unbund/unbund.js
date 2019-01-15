@@ -1,5 +1,9 @@
 // pages/equip/unbund/unbund.js
 var app = getApp();
+const util = require('../../../utils/util.js')
+const httpUtil = require('../../../utils/httpUtil.js')
+
+const eqmUrl = app.globalData.HTTP_URL + '/MiniProgram/eqm'
 Page({
 
   /**
@@ -7,115 +11,88 @@ Page({
    */
   data: {
     getPhoneValue: null,
-    phone: null,
-    codename: '获取验证码',
-    getCodeValue: null,
+    codeBtn: '获取验证码',
     code: null,
     iscode: null,
     eqmNumber: '',
     modelName: '',
-    phoneId:''
+    phoneId: '',
+
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    app.data.eqmNumber = options.eqmNumber;
-    var modelName = options.modelName;
-    var phoneId = options.phoneId;
+  onLoad: function(options) {
+   
     this.setData({
-      eqmNumber: app.data.eqmNumber,
-      modelName: modelName,
-      phoneId: phoneId
+      eqmNumber: options.eqmNumber,
+      modelName: options.modelName,
+      phoneId: options.phoneId
     })
-    console.log('eqmNumber' + app.data.eqmNumber);
-    console.log('modelName' + modelName);
-    console.log('phoneId' + phoneId);
+    console.log('eqmNumber' + this.data.eqmNumber);
+    console.log('modelName' + this.data.modelName);
+    console.log('phoneId' + this.data.phoneId);
   },
-  // getPhoneValue: function (e) {
-  //   this.data.getPhoneValue = e.detail.value;
-  //   console.log('电话号码'+this.data.getPhoneValue)
-  // },
-  getCodeValue: function (e) {
-    this.data.getCodeValue = e.detail.value;
-  },
-  removeTap:function(){
-    var _this = this;
-    wx.request({
-      url: app.globalData.httpUrl+'/MiniProgram/getPhoneCode.do',
-      header: app.data.header,
-      data: {
-        "number": _this.data.phoneId
-      },
-      // method: 'POST',
-      success(res) {
-        console.log(res.data)
-        _this.setData({
-          iscode: res.data
-        })
-        var num = 61;
-        var timer = setInterval(function () {
-          num--;
-          if (num <= 0) {
-            clearInterval(timer);
-            _this.setData({
-              codename: '重新发送',
-              disabled: false
-            })
 
-          } else {
-            _this.setData({
-              codename: num + "s"
-            })
-          }
-        }, 1000)
-      }
-    })
+  getCodeValue: function(e) {
+    this.data.code = e.detail.value;
+    console.log('code:', this.data.code)
   },
-  unbidTap: function () {
-    var code = this.data.getCodeValue;
-    var eqmNumber = app.data.eqmNumber;
-    console.log('eqmNumber' + eqmNumber)
-    if (code != '' & code != null){
-      wx.request({
-        url: app.globalData.httpUrl + '/MiniProgram/deleteEqm.do',
-        header: app.data.header,
-       
-        data: {
-          "code": code,
-          "eqmNumber": eqmNumber,
-          "openId": app.data.openId
-        },
-        // header: {
-        //   'content-type': 'application/x-www-form-urlencoded' // 默认值
-        // },
-        // method: 'POST',
-        success: function (res) {
-          console.log('app.data.header' + app.data.header)
+  //获取验证码
+  getCode: function() {
+    var that = this;
+    //检验手机号码是否输入且是否正确
+    var _phone = util.checkPhone(app.data.user.phone)
+    var getCodeUrl = app.globalData.HTTP_URL + '/MiniProgram/getPhoneCode'
+    var sendData = {
+      'number': app.data.user.phone
+    };
+    //手机号码检验合格发送获取验证码请求
+    if (_phone) {
+      httpUtil.promiseHttp(getCodeUrl, 'GET', sendData)
+        .then((res) => { //请求成功返回
+          that.data._code = res.data;
+          if (that.data._code) { //开始倒计时
+            util.setTimeInterval(app.globalData.time, that)
+          }
+        }).catch((res) => { //失败进入
+          console.log('fail:', res)
+        })
+    }
+  },
+  unbidTap: function() {
+    //校验手机号码
+    var _phone = util.checkPhone(this.data.phoneId)
+    //校验验证码
+    var _code = util.checkCode(this.data.code)
+    let _eqm = {
+      phoneId: this.data.phoneId,
+      code: this.data.code,
+      eqmNumber: this.data.eqmNumber,
+    }
+    console.log('_eqm:', _eqm)
+    if (_phone && _code) { //校验成功发送请求
+      httpUtil.promiseHttp(eqmUrl, 'DELETE', _eqm).then((res) => {
+        if (res.statusCode == 200) {
           wx.showToast({
-            title: '解绑成功',
-            icon: 'success',
-            duration: 2000,
-          }),
+              title: '解绑成功',
+              icon: 'success',
+              duration: 1000,
+            }),
             wx.switchTab({
-              url: '../../equip/equip',   //注意switchTab只能跳转到带有tab的页面，不能跳转到不带tab的页面
+              url: '../../equip/equip', 
             })
-        },
-        fail: function (res) {
+        } else {
           wx.showToast({
             title: '解绑失败',
-            icon: 'success',
-            duration: 2000,
+            duration: 1000,
           })
         }
-      })
-    } else if (code == '' & code == null){
-      wx.showToast({
-        title: '请输入验证码',
-        icon: 'success',
-        duration: 2000,
+      }).catch((res) => {
+        wx.showToast({
+          title: '绑定失败',
+        })
       })
     }
-    console.log(code);
   }
 })

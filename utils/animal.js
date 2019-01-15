@@ -3,7 +3,7 @@ var app = getApp();
 //获取宠物对象
 function getAnimals(openId){
   wx.request({
-    url: app.globalData.httpUrl + '/MiniProgram/findAllAnimal.do',
+    url: app.globalData.HTTP_URL + '/MiniProgram/findAllAnimal',
     method: 'POST',
     data: openId,
     success: function (res) {
@@ -19,13 +19,12 @@ function getAnimals(openId){
 //发送宠物对象
 function sendAnimalVO(animalVO, type){
   wx.request({
-    url: app.globalData.httpUrl + '/MiniProgram/Animal.do',
+    url: app.globalData.HTTP_URL + '/MiniProgram/animal',
     data: animalVO,
     method: type,
     success: function (res) {
       if (res.statusCode == 201 || res.statusCode == 200) {
-        console.log('添加宠物成功', res)
-        getAnimals(app.data.openId)//请求以后刷新app.data.aniamlVO数据
+        console.log('成功', res)
         wx.switchTab({
           url: '../../pet/pet',   //注意switchTab只能跳转到带有tab的页面，不能跳转到不带tab的页面
         })
@@ -51,7 +50,7 @@ function checkForm(animalVO){
       icon: 'false',
       duration: 1000
     })
-  } else if (animalVO.age == undefined || animalVO.age == '') {
+  } else if (animalVO.birthday == undefined || animalVO.birthday == '') {
     wx.showToast({
       title: '请选择出生日期',
       icon: 'false',
@@ -86,7 +85,7 @@ function getVarieties(){
     fail: function (res) {
       console.log("无缓存")
       wx.request({
-        url: app.globalData.httpUrl + '/MiniProgram/findVarieties.do',
+        url: app.globalData.HTTP_URL + '/MiniProgram/findVarieties',
         data: {
           'parentId': 1
         },
@@ -121,10 +120,23 @@ function getIndex(arr,len,value){
   }
 }
 
+//改变宠物设备的关联设备号
+function changeEqmNumber(animalVO,contentType){
+  wx.request({
+    url: app.globalData.HTTP_URL + '/MiniProgram/findVarieties',
+    data:animalVO,
+    method:contentType,
+    success:function(res){
+      console.log('success-',res)
+    }
+  })
+}
+
 module.exports = {
   sendAnimalVO: sendAnimalVO,
   checkForm: checkForm,
   getVarieties: getVarieties,
   getIndex: getIndex,
-  getAnimals: getAnimals
+  getAnimals: getAnimals,
+  changeEqmNumber: changeEqmNumber,
 }

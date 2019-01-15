@@ -23,7 +23,7 @@
       <text>如果当前号码无法接受短信,请联系客服进行验证</text>
     </view>
     <view class='code'>
-      <text catchtap='removeTap' disabled='{{disabled}}'>{{codename}}</text>
+      <text catchtap='getCode' disabled='{{disabled}}'>{{codeBtn}}</text>
     </view>
     <view class='phone'>
       <text>验证码：</text>

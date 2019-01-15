@@ -1,8 +1,9 @@
 {
   "pages": [
-    "pages/pet/pet",
     "pages/home/home",
+    "pages/pet/pet",
     "pages/equip/unbund/unbund",
+    "pages/bingPhone/bingPhone",
     "pages/equip/bind/bind",
     "pages/pet/edit/edit",
     "pages/equip/equip",
@@ -13,34 +14,34 @@
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#7ca627",
-    "backgroundColorTop":"#7ca627",
+    "navigationBarBackgroundColor": "#f8801d",
+    "backgroundColorTop":"#f8801d",
     "navigationBarTitleText": "导宠",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "color": "#DBDBDB",
     "backgroundColor": "#ffffff",
-    "selectedColor": "#7ca627",
+    "selectedColor": "#f8801d",
     "list": [
       
       {
         "pagePath": "pages/pet/pet",
-        "text": "我的宠物",
-        "iconPath": "image/tab2.png",
-        "selectedIconPath": "image/tab2_active.png"
+        "text": "宠物",
+        "iconPath": "image/pet.png",
+        "selectedIconPath": "image/pet_active.png"
       },
       {
         "pagePath": "pages/home/home",
-        "text": "首页",
-        "iconPath": "image/tab1.png",
-        "selectedIconPath": "image/tab1_active.png"
+        "text": "位置",
+        "iconPath": "image/location.png",
+        "selectedIconPath": "image/location_active.png"
       },
       {
         "pagePath": "pages/equip/equip",
-        "text": "我的设备",
-        "iconPath": "image/tab3.png",
-        "selectedIconPath": "image/tab3_active.png"
+        "text": "设备",
+        "iconPath": "image/eqm.png",
+        "selectedIconPath": "image/eqm_active.png"
       }
     ]
   },
@@ -48,5 +49,10 @@
     "request": 10000,
     "downloadFile": 10000
   },
-  "debug": true
+  "debug": true,
+  "permission":{
+    "scope.userLocation": {
+      "desc": "小程序需要获取您的位置信息"
+    }
+  }
 }

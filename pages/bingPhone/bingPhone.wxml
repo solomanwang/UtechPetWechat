@@ -1,0 +1,26 @@
+<!--pages/bingPhone/bingPhone.wxml-->
+<view class='cont' >
+  <view class='conter'>
+
+    <view class='txtphone'>
+      <text>绑定手机号码</text>
+    </view>
+      <view class='infor-detail'>
+          <text>为了确保您账号的安全及正常使用，依《网络安全法》相关要求，账号需绑定手机</text>
+      </view>
+    <view class='phone'>
+      <text>手机号码：</text>
+      <input placeholder-class="place-holder" placeholder='请输入你的手机号码' bindinput='getPhoneValue' value='{{user.phone}}'></input>
+    </view>
+    <!-- <view class='code'>
+      <text bindtap='getCode' disabled='{{disabled}}'>{{codeBtn}}</text>
+    </view> -->
+    <view class='verificationcode'>
+      <button class='getCodeValue' bindtap='getCode' disabled='{{disabled}}'>{{codeBtn}}</button>
+      <input placeholder-class="place-holder" placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'></input>
+    </view>
+    <view class='binding'>
+      <button bindtap='bingPhone'>绑定</button>
+    </view>
+  </view>
+</view>

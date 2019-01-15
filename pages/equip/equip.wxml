@@ -1,22 +1,17 @@
  <!--pages/equip/equip.wxml-->
-<block wx:if="{{arr.length < 1}}">
-  <view class='port'>
-    <image src='../../image/not.svg'></image>
-    <text>您还没有绑定设备</text>
-  </view>
-</block>
-<block wx:elif='{{arr.length >= 1}}'>
-  <view class='my' wx:for='{{arr}}'>
+
+<block wx:if='{{show}}'>
+  <view class='my'>
     <view class='myintro'>
       <image src='../../image/pic.jpg'> </image>
       <view class='detail'>
         <view>
           <text>设备号：</text>
-          <text>{{item.eqmNumber}}</text>
+          <text>{{eqm.eqmNumber}}</text>
         </view>
         <view>
           <text>型号：</text>
-          <text class='model'>{{item.modelName}}</text>
+          <text class='model'>{{eqm.modelName}}</text>
         </view>
       </view>
     </view>
@@ -28,11 +23,17 @@
     <view class='btn'>
       <text space="emsp">电  量:</text>
       <text class='auto' bindtap='goTap' data-value='GDF'>{{power}}</text>
-      <text class='unbund untie' catchtap='unbundTap' data-eqmNumber='{{item.eqmNumber}}' data-phoneId='{{item.phoneId}}' data-modelName='{{item.modelName}}'>解绑</text>
+      <text class='unbund untie' catchtap='unbundTap' data-eqmNumber='{{eqm.eqmNumber}}' data-phoneId='{{eqm.phoneId}}' data-modelName='{{eqm.modelName}}'>解绑</text>
     </view> 
   </view>
 </block>
+<block wx:elif="{{!show}}">
+  <view class='port'>
+    <image src='../../image/not.svg'></image>
+    <text>您还没有绑定设备</text>
+  </view>
 <button class='add' bindtap='click'>添加设备</button>
+</block>
 <view class='guide'>
   <view>绑定/解绑：</view>
   <view class='num'>1.扫描设备二维码</view>

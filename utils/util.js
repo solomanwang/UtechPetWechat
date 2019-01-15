@@ -1,4 +1,6 @@
-const formatTime = date => {
+var app = getApp();
+
+const formatTimeD = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -7,6 +9,14 @@ const formatTime = date => {
   const second = date.getSeconds()
 
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+}
+
+const formatTimeN = date => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  return [year, month, day].map(formatNumber).join('-')
 }
 
 const formatNumber = n => {
@@ -63,8 +73,99 @@ function getAge(strBirthday) {
   return returnAge;//返回周岁年龄  
 
 }
+//判断是否有phone，没有就跳转到绑定页面
+function hasPhone(){
+  if (app.data.user.phone == null || app.data.user.phone == undefined || app.data.user.phone == ''){
+    wx.navigateTo({
+      url: '../bingPhone/bingPhone'
+    })
+  }
+}
+
+//获取验证码
+function getCode(phone){
+  wx.request({
+    url: app.globalData.httpUrl + '/MiniProgram/getPhoneCode.do',
+    data: {
+      "number": phone
+    },
+    success(res) {
+      console.log('验证码',res.data)
+      return res.data
+    }
+  })
+}
+//设置定时任务
+//num 为设置倒计时的时间
+function setTimeInterval(num,that){
+  var timer = setInterval(function () {
+    num--;
+    console.log('倒计时：',num)
+    if (num <= 0) {
+      clearInterval(timer);
+      that.setData({
+        codeBtn: '重新发送',
+        disabled: false
+      })
+
+    } else {
+      that.setData({
+        codeBtn: num + "s"
+      })
+    }
+  }, 1000)
+}
+
+//检查输入手机号码格式
+function checkPhone(phone){
+  var reg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+  if (phone == "" || phone == null) {
+    wx.showToast({
+      title: '手机号不能为空',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else if (!reg.test(phone)) {
+    wx.showToast({
+      title: '手机号格式错误',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  }else{
+    return true;
+  }
+}
+//检查验证码格式
+function checkCode(code){
+  var reg = /^\d{6}\b/;
+  if (code == "" || code == null) {
+    wx.showToast({
+      title: '验证码不能为空',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else if (!reg.test(code)) {
+    wx.showToast({
+      title: '验证码格式错误',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else {
+    return true;
+  }
+}
 
 module.exports = {
-  formatTime: formatTime,
-  getAge:getAge
+  formatTimeD: formatTimeD,
+  formatTimeN: formatTimeN,
+  getAge:getAge,
+  checkPhone: checkPhone,
+  checkCode: checkCode,
+  getCode: getCode,
+  setTimeInterval: setTimeInterval,
+  hasPhone: hasPhone
 }

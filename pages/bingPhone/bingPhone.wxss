@@ -1,0 +1,96 @@
+/* pages/equip/add/add.wxss */
+.cont{
+  box-sizing: border-box;
+  height: 750rpx;
+  width: 90%;
+  border: 1rpx solid #dcdcdc;
+  border-radius: 20rpx;
+  background: #fff;
+  margin:0 auto;
+  margin-top: 100rpx;
+  padding: 40rpx;
+}
+.conter{
+  height: 100%;
+  white-space: 100%;
+  border-top: 1rpx solid #dcdcdc;
+  border-bottom: 1rpx solid #dcdcdc;
+}
+.jumpover{
+  float: right;
+  margin-top: 47rpx;
+}
+.jumpover text{
+  font-size: 14px;
+  color: gray;
+}
+
+.txtphone{
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 30rpx;
+}
+
+.infor-detail{
+  margin-top: 35rpx;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #e4dfd9b4;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+}
+.infor-detail text{
+  font-size: 12px;
+}
+
+.phone{
+  margin-top: 35rpx;
+}
+.phone text{
+  margin-top: 15rpx;
+  float: left;
+  font-size: 16px;
+  color: gray;
+}
+.phone input{
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  height: 80rpx;
+  padding-left: 5px;
+}
+
+.place-holder{
+  font-size: 12px;
+}
+.verificationcode{
+  margin-top: 35rpx;
+  margin-bottom:55rpx;
+
+}
+.getCodeValue{
+  height: 80rpx;
+  width: 38%;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  background-color: #fa7a47;
+  float: right;
+}
+.verificationcode input{
+   width: 56%;
+   height: 80rpx;
+   border: 1px solid #dcdcdc;
+   border-radius: 5px;
+   padding-left: 5px;
+}
+.binding{
+  margin:0 auto;
+  width:200rpx;
+
+}
+.binding button{
+   height: 80rpx;
+   font-size: 16px;
+   color: rgb(255, 255, 255);
+   background-color: #fa7a47;
+}

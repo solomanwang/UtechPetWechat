@@ -1,6 +1,6 @@
 <!--pages/pet/pet.wxml-->
 <view class='cont' bindtap='petTap' data-idNum='{{item.animalId}}' data-var='{{item.varietiesName}}'
-data-aname='{{item.aname}}' data-age='{{item.age}}' data-asex='{{item.asex}}' data-eqmNumber='{{item.eqm.eqmNumber}}'  data-phoneId='{{item.eqm.phoneId}}' data-modelName='{{item.eqm.modelName}}' wx:for="{{animalVO}}">
+data-aname='{{item.aname}}' data-age='{{item.birthday}}' data-asex='{{item.asex}}' data-eqmNumber='{{item.eqmNumber}}'  data-phoneId='{{item.eqm.phoneId}}' data-modelName='{{item.eqm.modelName}}' wx:for="{{animalVO}}" wx:key='key'>
   <view class='tit'>
     <text class='card'>他的名片</text>
     <text class='kid' >{{item.varietiesName}}</text>
@@ -9,17 +9,16 @@ data-aname='{{item.aname}}' data-age='{{item.age}}' data-asex='{{item.asex}}' da
     <image class='pet' src='../../image/pet.svg'></image>
     <text class='user' >{{item.aname}}</text>
     <image class='boy' src="{{item.asex== 1 ? '../../../image/girl.svg':'../../../image/boy.svg'}}"></image>
-    <text>{{item.age}}周岁</text>
+    
   </view>
   <view class='detail state'>
     <image class='mark' src='../../image/mark.svg'></image>
     <text class='step'>{{stepNum}}</text>  
-    <!-- <text class='step' wx:if='{{stepNum == null}}'>0</text>  
-    <text class='step' wx:elif = '{{stepNum != null}}'>{{stepNum}}</text>   -->
+    <text class='birthday'>生日：{{item.birthday}}</text>
   </view>
   <view class='pic'>
-    <text wx:if="{{item.eqmNumber != null}}">设备号：{{item.eqmNumber}}</text>
-    <text wx:elif="{{item.eqmNumber == null}}">没有绑定设备</text>
+    <text wx:if="{{item.eqmNumber != null && item.eqmNumber != ''}}">设备号：{{item.eqmNumber}}</text>
+    <text wx:elif="{{item.eqmNumber == null || item.eqmNumber == ''}}">没有绑定设备</text>
   </view>
 </view>
 <button class='btn' bindtap='addTap'>添加宠物</button>
