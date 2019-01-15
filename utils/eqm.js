@@ -12,88 +12,40 @@ function getEqmNumber(arr){
     }
   }
 }
-//根据设备号查询绑定的设备
-function findEqmByEqmNumber(eqmNumber){
-  console.log('eqmNumber = ', eqmNumber)
-  wx.request({
-    url: app.globalData.HTTP_URL + '/MiniProgram/eqm',
-    data: {
-      'eqmNumber': eqmNumber
-    },
-    method:'GET',
-    success:function(res){
-      if(res.statusCode == 200){
-        console.log('查询出来的设备：', res)
-        return res.data
-      }else{
-        console.log('出现错误')
-      }
-    }
-  })
-}
 
-//根据手机号查询未绑定宠物的设备
-// function findUnbindEqm(openId,that){
-//   wx.request({
-//     url: app.globalData.HTTP_URL + '/MiniProgram/EqmByPhone',
-//     data: openId,
-//     method: 'POST',
-//     success: function (res) {
-//       if (res.statusCode == 200) {
-//         that.setData({
-//           arr: res.data
-//         })
-//       } else {
-//         console.log('未找到')
-//       }
-//     },
-//     fail: function (res) {
-//       console.log('出现错误')
-//     }
-//   })
-// }
-//解除设备绑定
-function unbingEqmwithAnimal(animalId){
-  wx.request({
-    url: app.globalData.HTTP_URL + '/MiniProgram/eqm',
-    data:animalId,
-    method:'GET',
-    success:function(res){
-      console.log('与宠物的绑定解除成功：',res)
-    }
-  })
+//解析二维码内容 strim()
+function getModleName(res){
+  if(res == '001'){
+    return app.data.eqmModle.MODLE_A
+  }
+  if(res == '002'){
+    return app.data.eqmModle.MODLE_B
+  }
+  if(res == '003'){
+    return app.data.eqmModle.MODLE_C
+  }
+  if(res == '004'){
+    return app.data.eqmModle.MODLE_D
+  }
 }
-
-//根据手机号码查询用户的设备
-function findEqmByOpenId(phone,that){
-  
-  wx.request({
-    url: app.globalData.HTTP_URL + '/MiniProgram/EqmByPhone',
-    data: {
-      "phoneId": phone,
-    },
-    method: 'POST',
-    header: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
-    success: function (res) {
-      console.log('返回的设备 :', res.data)
-      if(res.statusCode == 200 && res.data != ""){//200表示请求成功获取
-        that.setData({
-          show : true,
-          eqm : res.data
-        })
-      }else if(res.statusCode == 404){//表示未找到设备
-        console.log('未找到设备')
-      }
-      
-    }
-  })
+//返回图片链接
+function getEqmImg(res){
+  if (res == '001') {
+    return app.data.img.IMG_A
+  }
+  if (res == '002') {
+    return app.data.img.IMG_B
+  }
+  if (res == '003') {
+    return app.data.img.IMG_C
+  }
+  if (res == '004') {
+    return app.data.img.IMG_D
+  }
 }
 
 module.exports = {
   getEqmNumber:getEqmNumber,
-  findEqmByEqmNumber: findEqmByEqmNumber,
-  // findUnbindEqm: findUnbindEqm,
-  findEqmByOpenId: findEqmByOpenId
+  getModleName: getModleName,
+  getEqmImg: getEqmImg
 }

@@ -15,6 +15,7 @@ Page({
       code: ''
     },
     codeBtn: '获取验证码',
+    disabled: false,
     _code: false
   },
 
@@ -75,7 +76,7 @@ Page({
       .then((res) => {//请求成功返回
         that.data._code = res.data;
         if (that.data._code) {//开始倒计时
-          util.setTimeInterval(app.globalData.time, that)
+          util.setTimeInterval(app.globalData.COUNT_DOWN, that)
         }
       }).catch((res) => {//失败进入
         console.log('fail:',res)

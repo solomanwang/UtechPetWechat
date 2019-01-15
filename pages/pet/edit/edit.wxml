@@ -25,7 +25,7 @@
   <view class="key">
     <view class="left">生日：</view>
       <view class="row-wrap">
-      <picker mode="date" value="{{date}}" start="2015-09-01" end="2019-01-01" bindchange="bindDateChange">
+      <picker mode="date" value="{{date}}" start="{{start}}" end="{{end}}" bindchange="bindDateChange">
         <view class="picker">{{date}}</view>
       </picker>
     </view>
@@ -43,7 +43,7 @@
   </view>
   <!-- 绑定项圈后展示 -->
   <view id='ever' class='phone_personal information' bindtap="clickPerson" wx:if='{{eqm}}'>
-    <image src='../../../image/pic.jpg'></image>
+    <image src='{{eqm.eqmImg}}'></image>
       <view class='infor-detail'>
         <view>
           <text>设备号：</text>
@@ -58,15 +58,15 @@
   </view> 
   <!-- 绑定项圈前 -->
   <view class="phone_personal" bindtap="clickPerson" wx:else>
-    <image src='{{img}}'></image>
+    <!-- <image src='{{img}}'></image> -->
     <view class='infor-detail'>
-      <text class='number'>{{eqmNumberNew}}</text>
+      <text class='number'>为它绑定项圈</text>
     </view>
   </view>
   <view class="phone_select" hidden="{{selectPerson}}">
-    <view class='information select_one' catchtap='mySelect' 
-    data-number='{{newEqm.eqmNumber}}' data-modelName='{{newEqm.modelName}}' data-img='../../../image/pic.jpg'>
-      <image src='../../../image/pic.jpg'></image>
+    <view wx:if='{{newEqm}}' class='information select_one' catchtap='mySelect' 
+    data-number='{{newEqm.eqmNumber}}' data-modelName='{{newEqm.modelName}}' data-img='{{newEqm.eqmImg}}'>
+      <image src='{{newEqm.eqmImg}}'></image>
       <view class='infor-detail'>
         <view>
           <text>设备号：</text>

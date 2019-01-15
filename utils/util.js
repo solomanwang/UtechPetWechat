@@ -110,6 +110,7 @@ function setTimeInterval(num,that){
 
     } else {
       that.setData({
+        disabled: true,
         codeBtn: num + "s"
       })
     }

@@ -45,7 +45,7 @@
   <!-- 判断宠物是否关联设备 -->
   <!-- 绑定有设备 -->
   <view id='ever' class='phone_personal information' bindtap="clickPerson" wx:if='{{eqm}}'>
-    <image src='../../../image/pic.jpg'></image>
+    <image src='{{eqm.eqmImg}}'></image>
       <view class='infor-detail'>
         <view>
           <text>设备号：</text>
@@ -62,14 +62,13 @@
   <view class="phone_personal" bindtap="clickPerson" wx:else>
     <image src='{{img}}'></image>
     <view class='infor-detail'>
-      <text>设备号：</text>
-      <text class='number'>{{eqmNumberNew}}</text>
+      <text class='number'>还没有绑定项圈哟！</text>
     </view>
   </view>
   <view class="phone_select" hidden="{{selectPerson}}">
-    <view class='information select_one'  catchtap='mySelect'
-     data-number='{{newEqm.eqmNumber}}' data-modelName='{{newEqm.modelName}}' data-img='../../../image/pic.jpg'>
-      <image src='../../../image/pic.jpg'></image>
+    <view wx:if='{{newEqm}}' class='information select_one'  catchtap='mySelect'
+     data-number='{{newEqm.eqmNumber}}' data-modelName='{{newEqm.modelName}}' data-img='{{newEqm.eqmImg}}'>
+      <image src='{{newEqm.eqmImg}}'></image>
       <view class='infor-detail'>
         <view>
           <text>设备号：</text>

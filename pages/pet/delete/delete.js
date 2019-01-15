@@ -13,7 +13,6 @@ Page({
    */
   data: {
     selectPerson: true,
-    eqmNumberNew: '请先绑定设备',
     selectArea: false,
     deleteAnimalId: '', //保存点击后需要删除的宠物ID
     start: '2000-01-01',
@@ -63,7 +62,6 @@ Page({
     let w = null;
     // 获取所有未绑定宠物的设备
     console.log('options = ', options);
-    console.log('eqm = ', that.data.eqm);
     let len = app.data.casArray.length; //数组的长度
     //返回的下标
     var num = animalUtil.getIndex(app.data.casArray, len, options.varietiesName);
@@ -98,16 +96,18 @@ Page({
         phoneId: app.data.user.phone,
       },
     })
+    console.log('eqm:', that.data.eqm)
     //根据设备号查找绑定的设备
-    if (options.eqmNumber != "" && options.eqmNumber != undefined) {
-
-      console.log('eqmNumber:', eqmNumberData)
+    if (that.data.animal.eqmNumber != 'null') {
       httpUtil.promiseHttp(eqmUrl, 'GET', eqmNumberData).then(function(res) {
         that.setData({
           eqm: res.data
         })
       })
-
+    }else{
+      that.setData({
+        eqm:''
+      })
     }
 
   },
@@ -127,10 +127,7 @@ Page({
       }
     })
   },
-  // 页面中传过来的值（姓名，品种，年龄性别等）
-  // classifyTap: function (e) {
-  //   console.log('e.currentTarget.dataset.casArray'+e.currentTarget.dataset.casArray);
-  // },
+
   // 单选框的内容
   // 1表示母，2表示公；
   radioChange: function(e) {
@@ -235,14 +232,22 @@ Page({
 
     if (selectPerson == true) {
       //查询未关联宠物的设备
-      httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone).then(function(res) {
+      httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone)
+      .then(function(res) {
+      if(res.data != ''){
         that.setData({
-          selectArea: true,
-          selectPerson: false,
-          newEqm: res.data
+          newEqm :res.data
         })
+      }else{
+        that.setData({
+          newEqm: ''
+        })
+      }
       })
-
+      that.setData({
+        selectArea: true,
+        selectPerson: false,
+      })
     } else {
       that.setData({
         selectArea: false,

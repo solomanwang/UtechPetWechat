@@ -1,127 +1,101 @@
 var app = getApp();
+const eqmlUtil = require('../../../utils/eqm.js')
+const util = require('../../../utils/util.js')
+const httpUtil = require('../../../utils/httpUtil.js')
 Page({
   /**  页面的初始数据 */
   data: {
     getPhoneValue:null,
     phone:null,
-    codename:'获取验证码',
+    codeBtn:'获取验证码',
     getCodeValue:null,
     code:null,
-    iscode:null,
+    _code: false,
     eqmNumber: "",
     modelName: "",
-    eqmImg: ""
+    eqmImg: "",
+    disabled: false
   },
-  onShow: function (options) {  
+  onLoad: function (options) { 
+    console.log(options) 
+    let modelName = eqmlUtil.getModleName(options.modleNumber);
+    let eqmImg = eqmlUtil.getEqmImg(options.modleNumber);
     this.setData({
-      eqmNumber: app.data.eqmNumber,
-      modelName: app.data.modelName,
-      eqmImg: app.data.eqmImg
+      eqmNumber: options.eqmNumber,
+      modelName: modelName,
+      eqmImg: eqmImg
     }) 
+
   },
   getPhoneValue:function(e){
-    app.data.number = e.detail.value;
+    this.data.phone = e.detail.value;
   },
   getCodeValue: function (e) {
     this.data.getCodeValue = e.detail.value;
   },
-  getVerificationCode:function(){
-    var _this=this;
-    var number = app.data.number;
-    var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
-    if(number==""||number==null){
-      wx.showToast({
-        title: '手机号不能为空',
-        icon: 'none',
-        duration: 2000
-      })
-      return false;
-    }else if(!myreg.test(number)){
-      wx.showToast({
-        title: '手机号格式错误',
-        icon: 'none',
-        duration: 2000
-      })
-      return false;
-    }else{
-      wx.request({
-        url: app.globalData.httpUrl+'/MiniProgram/getPhoneCode.do',
-        header: app.data.header,
-        data:{
-          "number":number
-        },
-        success(res) {
-          console.log(res.data)
-          _this.setData({
-            iscode: res.data
-          })
-          var num = 61;
-          var timer = setInterval(function () {
-            num--;
-            if (num <= 0) {
-              clearInterval(timer);
-              _this.setData({
-                codename: '重新发送',
-                disabled: false
-              })
-
-            } else {
-              _this.setData({
-                codename: num + "s"
-              })
-            }
-          }, 1000)
-        }
-      })
+  
+  //获取验证码
+  getCode: function () {
+    var that = this;
+    //检验手机号码是否输入且是否正确
+    var _phone = util.checkPhone(this.data.phone)
+    var getCodeUrl = app.globalData.HTTP_URL + '/MiniProgram/getPhoneCode'
+    var sendData = {
+      'number': this.data.phone
+    };
+    //手机号码检验合格发送获取验证码请求
+    if (_phone) {
+      httpUtil.promiseHttp(getCodeUrl, 'GET', sendData)
+        .then((res) => { //请求成功返回
+          that.data._code = res.data;
+          if (that.data._code) { //开始倒计时
+            util.setTimeInterval(app.globalData.COUNT_DOWN, that)
+          }
+        }).catch((res) => { //失败进入
+          console.log('fail:', res)
+        })
     }
-    console.log(number);
   },
+  //绑定
   save:function(){
-    var code = this.data.getCodeValue;
-    console.log('number' + app.data.number)
-    console.log('code' + code)
-    if (app.data.number != '' & code != '' & app.data.number != null & code != null){
-      wx.request({
-        url: app.globalData.httpUrl + '/MiniProgram/verificationCode.do',
-        header: app.data.header,
-        data: {
-          "code": code,
-          "openId": app.data.openId,
-          "modelName": app.data.modelName,
-          "eqmImg": app.data.eqmImg
-        },
-        success: function (res) {
-          console.log('888888888888' + res);
+    //校验手机号码
+    let _phone = util.checkPhone(this.data.phone)
+    //校验验证码
+    let _code = util.checkCode(this.data.getCodeValue)
+
+    var url = app.globalData.HTTP_URL + '/MiniProgram/eqm'
+
+    if (_phone && _code) {//校验成功发送请求
+    let sendEqm = {
+      eqmNumber:this.data.eqmNumber,
+      modelName: this.data.modelName,
+      phoneId: this.data.phone,
+      eqmImg: this.data.eqmImg,
+      code: this.data.getCodeValue
+    }
+    console.log(sendEqm)
+      httpUtil.promiseHttp(url, 'POST', sendEqm).then((res) => {
+        if (res.statusCode == 200) {
           wx.showToast({
             title: '绑定成功',
             icon: 'success',
-            duration: 2000,
+            duration: 1000,
           }),
-          wx.switchTab({
-            url: '../../equip/equip',   //注意switchTab只能跳转到带有tab的页面，不能跳转到不带tab的页面
+          wx.reLaunch({
+            url: '../../equip/equip'
           })
-        },
-        fail: function (res) {
+          console.log('绑定成功')
+        } else {
           wx.showToast({
             title: '绑定失败',
-            icon: 'success',
-            duration: 2000,
+            duration: 1000,
           })
         }
-      })
-    } else if (app.data.number == '' || app.data.number == null){
+      }).catch((res) => {
         wx.showToast({
-          title: '请输入电话号码',
-          icon: 'success',
-          duration: 2000,
+          title: '请求失败',
         })
-    } else if (code == '' || code == null) {
-      wx.showToast({
-        title: '请输入验证码',
-        icon: 'success',
-        duration: 2000,
       })
     }
-    console.log(code);
   }
 })

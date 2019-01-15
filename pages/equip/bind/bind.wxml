@@ -2,7 +2,7 @@
 <view class='cont'>
   <view class='conter'>
     <view class='information'>
-      <image src='../../../image/pic.jpg'></image>
+      <image src='{{eqmImg}}'></image>
       <view class='infor-detail'>
         <view>
           <text>设备号：</text>

@@ -2,7 +2,7 @@
 <view class='cont'>
   <view class='conter'>
     <view class='information'>
-      <image src='../../../image/pic.jpg'></image>
+      <image src='{{eqmImg}}'></image>
       <view class='infor-detail'>
         <view>
           <text>设备号：</text>
@@ -22,9 +22,7 @@
       <image src='../../../image/help1.svg'></image>
       <text>如果当前号码无法接受短信,请联系客服进行验证</text>
     </view>
-    <view class='code'>
-      <text catchtap='getCode' disabled='{{disabled}}'>{{codeBtn}}</text>
-    </view>
+      <button class='code' catchtap='getCode' disabled='{{disabled}}'>{{codeBtn}}</button>
     <view class='phone'>
       <text>验证码：</text>
       <input placeholder-class="place-holder" placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'></input>

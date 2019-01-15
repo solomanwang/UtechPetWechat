@@ -17,21 +17,21 @@ Page({
     eqmNumber: '',
     modelName: '',
     phoneId: '',
-
+    eqmImg:'',
+    disabled: false
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-   
+   console.log(options)
     this.setData({
       eqmNumber: options.eqmNumber,
       modelName: options.modelName,
-      phoneId: options.phoneId
+      phoneId: options.phoneId,
+      eqmImg: options.eqmImg
     })
-    console.log('eqmNumber' + this.data.eqmNumber);
-    console.log('modelName' + this.data.modelName);
-    console.log('phoneId' + this.data.phoneId);
+
   },
 
   getCodeValue: function(e) {
@@ -53,7 +53,7 @@ Page({
         .then((res) => { //请求成功返回
           that.data._code = res.data;
           if (that.data._code) { //开始倒计时
-            util.setTimeInterval(app.globalData.time, that)
+            util.setTimeInterval(app.globalData.COUNT_DOWN, that)
           }
         }).catch((res) => { //失败进入
           console.log('fail:', res)
@@ -74,6 +74,7 @@ Page({
     if (_phone && _code) { //校验成功发送请求
       httpUtil.promiseHttp(eqmUrl, 'DELETE', _eqm).then((res) => {
         if (res.statusCode == 200) {
+          app.data.unbund = true
           wx.showToast({
               title: '解绑成功',
               icon: 'success',

@@ -69,8 +69,10 @@
 }
 .place-holder{
   color: #dcdcdc;
-  font-size: 30rpx;
+  font-size: 12px;
 }
+
+
 /* 验证码 */
 .code{
   width: 100%;
@@ -82,7 +84,7 @@
   line-height: 100rpx;
   width: 35%;
   font-size: 30rpx;
-  background: #FF5057;
+  background: #fa7a47;
   color: #fff;
   border-radius: 5rpx;
   padding: 10rpx;
@@ -90,7 +92,7 @@
 /* 绑定按钮 */
 .bind{
   width: 250rpx;
-  background: #FF5057;
+  background: #fa7a47;
   color: #fff;
   margin-top: 200rpx;
 }

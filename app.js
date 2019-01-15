@@ -5,6 +5,19 @@ App({
       openId: '',
       phone: ''
     },
+    eqmModle: {
+      MODLE_A: '丐中丐',
+      MODLE_B: '入门级',
+      MODLE_C: '精英型',
+      MODLE_D: '土豪专用',
+    },
+    img: {
+      IMG_A: 'http://images-cn.ssl-images-amazon.com/images/I/41asy57wpHL._AA160_.jpg',
+      IMG_B: 'http://static.leiphone.com/uploads/2014/05/40529110120.jpg',
+      IMG_C: 'http://images-cn.ssl-images-amazon.com/images/I/41asy57wpHL._AA160_.jpg',
+      IMG_D: '../../image/pic.jpg',
+    },
+    unbund: false,
     number: '',
     eqmNumber: '', //设备号
     eqmKey: '',
@@ -34,8 +47,8 @@ App({
     SECRET: '9ed7df070d5766b4d03137fe3a5a5718', //secret需自己提供，此处的secret我随机编写
     HTTP_URL: "http://127.0.0.1:8083", //http请求前缀
     WEBSOCKET_URL: 'www.ai-ray.cn:8082', //websocket 请求前缀
-    COUNT_DOWN: 61, //倒计时时间
-    OK : 200
+    COUNT_DOWN: 60, //倒计时时间
+    OK: 200
     // HTTP_URL: "http://118.24.243.241:8083",
     // websocketUrl: '118.24.243.241:8082'
   },
@@ -110,7 +123,7 @@ App({
     })
   },
   //根据openId获取用户信息
-  getPhone: function(openId,getPhoneUrl) {
+  getPhone: function(openId, getPhoneUrl) {
     console.log('openid:', openId)
     return new Promise(function(resolve, reject) {
       wx.request({

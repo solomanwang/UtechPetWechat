@@ -3,7 +3,7 @@
 <block wx:if='{{show}}'>
   <view class='my'>
     <view class='myintro'>
-      <image src='../../image/pic.jpg'> </image>
+      <image src='{{eqm.eqmImg}}'> </image>
       <view class='detail'>
         <view>
           <text>设备号：</text>
@@ -23,7 +23,8 @@
     <view class='btn'>
       <text space="emsp">电  量:</text>
       <text class='auto' bindtap='goTap' data-value='GDF'>{{power}}</text>
-      <text class='unbund untie' catchtap='unbundTap' data-eqmNumber='{{eqm.eqmNumber}}' data-phoneId='{{eqm.phoneId}}' data-modelName='{{eqm.modelName}}'>解绑</text>
+      <text class='unbund untie' catchtap='unbundTap' 
+      data-eqmNumber='{{eqm.eqmNumber}}' data-phoneId='{{eqm.phoneId}}' data-modelName='{{eqm.modelName}}' data-eqmImg='{{eqm.eqmImg}}'>解绑</text>
     </view> 
   </view>
 </block>

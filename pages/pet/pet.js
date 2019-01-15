@@ -37,7 +37,7 @@ Page({
       url: '/pages/pet/edit/edit?user_id=111',
     })
   },
-  //删除
+  //编辑
   petTap: function(e) {
     var animalId = e.currentTarget.dataset.idnum;
     var aname = e.currentTarget.dataset.aname;
@@ -51,5 +51,4 @@ Page({
     })
   }
 
-  //下拉刷新
 })

@@ -1,5 +1,6 @@
 /* pages/equip/add/add.wxss */
-.cont{
+
+.cont {
   box-sizing: border-box;
   height: 770rpx;
   width: 90%;
@@ -10,13 +11,15 @@
   margin-top: 100rpx;
   padding: 40rpx;
 }
-.conter{
+
+.conter {
   height: 100%;
   white-space: 100%;
   border-top: 1rpx solid #dcdcdc;
   border-bottom: 1rpx solid #dcdcdc;
 }
-.information{
+
+.information {
   width: 100%;
   height: 200rpx;
   border: 1rpx solid #dcdcdc;
@@ -26,25 +29,31 @@
   justify-content: space-around;
   align-items: center;
 }
-.information image{
+
+.information image {
   height: 150rpx;
   width: 150rpx;
 }
-.information .infor-detail{
+
+.information .infor-detail {
   height: 200rpx;
   width: 400rpx;
   /* border: 1rpx solid #dcdcdc; */
   font-size: 30rpx;
 }
-.information .infor-detail view{
+
+.information .infor-detail view {
   margin-top: 40rpx;
 }
-.information .infor-detail view .number{
+
+.information .infor-detail view .number {
   color: #dcdcdc;
   margin-left: 30rpx;
 }
+
 /* 绑定了手机号码 */
-.connect{
+
+.connect {
   width: 100%;
   height: 100rpx;
   /* border: 1rpx solid #dcdcdc; */
@@ -53,14 +62,17 @@
   align-items: center;
   margin-top: 20rpx;
 }
-.connect text{
+
+.connect text {
   height: 100rpx;
   line-height: 100rpx;
   /* width: 35%; */
   font-size: 35rpx;
 }
+
 /* 解惑 */
-.buse{
+
+.buse {
   width: 100%;
   height: 90rpx;
   /* border: 1rpx solid #dcdcdc; */
@@ -69,11 +81,13 @@
   align-items: center;
   margin-top: -30rpx;
 }
-.buse image{
+
+.buse image {
   height: 40rpx;
   width: 40rpx;
 }
-.buse text{
+
+.buse text {
   height: 30rpx;
   line-height: 30rpx;
   color: #dcdcdc;
@@ -81,24 +95,22 @@
   font-size: 30rpx;
   margin-left: 30rpx;
 }
+
 /* 获取验证码 */
-.code{
-  width: 100%;
-  height: 100rpx;
-  /* border: 1rpx solid #dcdcdc; */
+
+.code {
+  height: 80rpx;
+  width: 38%;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  background-color: #fa7a47;
+  float: left;
+  margin-top: 30rpx;
 }
-.code text{
-  height: 100rpx;
-  line-height: 100rpx;
-  width: 35%;
-  font-size: 30rpx;
-  background: #FF5057;
-  color: #fff;
-  border-radius: 5rpx;
-  padding: 10rpx;
-}
+
 /* 验证码 */
-.phone{
+
+.phone {
   width: 100%;
   height: 100rpx;
   /* border: 1rpx solid #dcdcdc; */
@@ -108,27 +120,32 @@
   margin-top: 20rpx;
   margin-bottom: 20rpx;
 }
-.phone text{
+
+.phone text {
   height: 100rpx;
   line-height: 100rpx;
   width: 35%;
   font-size: 40rpx;
 }
-.phone input{
-   height: 60rpx;
-   width: 60%;
-   border: 1rpx solid #dcdcdc;
-   border-radius: 10rpx;
-   padding: 10rpx;
+
+.phone input {
+  height: 60rpx;
+  width: 60%;
+  border: 1rpx solid #dcdcdc;
+  border-radius: 10rpx;
+  padding: 10rpx;
 }
-.place-holder{
+
+.place-holder {
   color: #dcdcdc;
   font-size: 30rpx;
 }
+
 /* 绑定按钮 */
-.bind{
+
+.bind {
   width: 250rpx;
-  background: #FF5057;
+  background: #fa7a47;
   color: #fff;
   margin-top: 130rpx;
 }

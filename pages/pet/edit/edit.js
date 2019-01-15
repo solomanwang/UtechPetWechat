@@ -11,10 +11,10 @@ Page({
    */
   data: {
     selectPerson: true,
-    eqmNumberNew: '绑上我的项圈',
     selectArea: false,
     showView: false,
-    // nickName: "",//宠物名
+    start: '2000-01-01',
+    end: '',
     varietiesName: "",//品种名
     avatarUrl: "",
     casArray: [],
@@ -44,11 +44,13 @@ Page({
   /** -----------------------------------------------onLoad--------------------------------------------------- */
   onLoad:function(options){
     var that = this;
-    console.log('eqm = ', that.data.eqm);
+    var date = new Date;
+    let end = util.formatTimeN(date)
     //从缓存中拉取品种信息如果
     that.setData({
       casArray:app.data.casArray,
-      eqm:null
+      eqm:null,
+      end:end
     })
     // this.data.animal.varietiesName = '中华田园犬';
   },
@@ -87,13 +89,22 @@ Page({
     if (selectPerson == true) {
       //查询未关联宠物的设备
       httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone).then(function (res) {
-        that.setData({
-          selectArea: true,
-          selectPerson: false,
-          newEqm: res.data
-        })
-      })
 
+        if (res.data != '') {
+          that.setData({
+            newEqm: res.data
+          })
+        } else {
+          that.setData({
+            newEqm: ''
+          })
+        }
+        
+      })
+      that.setData({
+        selectArea: true,
+        selectPerson: false,
+      })
     } else {
       that.setData({
         selectArea: false,

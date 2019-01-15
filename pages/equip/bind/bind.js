@@ -6,11 +6,11 @@ Page({
     modelName: "",
     eqmImg: ""
   },
-  onShow: function (options) {
+  onLoad: function (options) {
     this.setData({
-      eqmNumber: app.data.eqmNumber,
-      modelName: app.data.modelName,
-      eqmImg: app.data.eqmImg
+      eqmNumber: options.eqmNumber,
+      modelName: options.modelName,
+      eqmImg: options.eqmImg
     })
   }
 })

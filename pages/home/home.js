@@ -49,7 +49,6 @@ Page({
           duration: 1000
         })
       }
-      console.log('app.data.user.phone:', app.data.user.phone);
       //判断手机号码是否存在
       if (app.data.user.phone == null || app.data.user.phone == undefined || app.data.user.phone == "") {
         //表示找到用户但是没有绑定手机,跳转绑定页面
@@ -63,7 +62,6 @@ Page({
       return app.data.user.phone
     })
     .then(function(res){
-      console.log('phone:',res)
       //根据手机号码查询宠物信息
       let findAnimalUrl = app.globalData.HTTP_URL + '/MiniProgram/findAllAnimal'
       return httpUtil.promiseHttp(findAnimalUrl, 'POST', res)
