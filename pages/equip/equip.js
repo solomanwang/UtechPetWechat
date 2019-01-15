@@ -18,44 +18,19 @@ Page({
       qrCode: ''
     },
   },
-  // 添加设备
+  // 添加设备扫描二维码
   click: function() {
     var that = this;
-    var result = null;
-    var arr = [];
     wx.scanCode({
       success: (res) => {
-        result = res.result;
-        arr = result.split(",");
-        app.data.eqmNumber = (arr[0].split(":"))[1];
-        app.data.modelName = (arr[1].split(":"))[1];
-        app.data.eqmImg = (arr[2].split(":"))[1] + ":" + (arr[2].split(":"))[2];
-        console.log("eqmNumber" + (arr[0].split(":"))[1])
-        console.log("modelName" + (arr[1].split(":"))[1])
-        console.log("eqmImg" + (arr[2].split(":"))[1] + ":" + (arr[2].split(":"))[2])
-        wx.request({
-            url: app.globalData.httpUrl + '/qrcode/getqrcode.do',
-            data: {
-              'eqmNumber': app.data.eqmNumber,
-            },
-            header: app.data.header,
-            success: function(res) {
-              if (res.data.status == 0) {
-                wx.navigateTo({
-                  url: '/pages/equip/bind/bind?eqmNumber=' + (arr[0].split(":"))[1] + "&modelName=" + (arr[1].split(":"))[1] + "&eqmImg=" + (arr[2].split(":"))[1] + ":" + (arr[2].split(":"))[2],
-                })
-              } else if (res.data.status == 1 || res.data.status == 2) {
-                wx.navigateTo({
-                  url: '/pages/equip/add/add?eqmNumber=' + (arr[0].split(":"))[1] + "&modelName=" + (arr[1].split(":"))[1] + "&eqmImg=" + (arr[2].split(":"))[1] + ":" + (arr[2].split(":"))[2],
-                })
-              }
-            }
-          }),
-          wx.showToast({
-            title: '成功',
-            icon: 'success',
-            duration: 3000,
-          })
+        console.log(res)
+        let result = res.result;
+        //解析获取二维码内容
+        //获取设备号发送后台查询是否绑定手机
+
+        //绑定手机跳转已经绑定界面
+
+        //未绑定手机组装数据跳转绑定新设备界面
       },
       fail: (res) => {
         wx.showToast({
@@ -64,7 +39,6 @@ Page({
           duration: 3000
         })
       },
-      complete: (res) => {}
     })
   },
   //发送websocket指令给设备
@@ -162,4 +136,5 @@ Page({
       url: '/pages/equip/unbund/unbund?eqmNumber=' + eqmNumber + "&phoneId=" + phoneId + "&modelName=" + modelName
     })
   }
+
 })
