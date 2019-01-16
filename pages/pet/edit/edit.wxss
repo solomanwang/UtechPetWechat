@@ -78,59 +78,6 @@
   color: #fff;
 }
 
-/* 显示与隐藏 */
-/* .information{
-  width: 100%;
-  height: 130rpx;
-  border: 1rpx solid #dcdcdc;
-  border-radius: 20rpx;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 10rpx;
-  box-sizing: border-box;
-}
-.information image{
-  height: 100rpx;
-  width: 100rpx;
-}
-.information .infor-detail{
-  height: 120rpx;
-  width: 400rpx;
-   border: 1rpx solid #dcdcdc; 
-  font-size: 30rpx;
-}
-.information .infor-detail view{
-  margin-left: 20rpx;
-  margin-top: 10rpx;
-}
-.information .infor-detail view .number{
-  color: #dcdcdc;
-  margin-left: 30rpx;
-}
-.untie{
-  width: 110rpx;
-  background: #FF5057;
-  color: #fff;
-  font-size: 25rpx;
-}
-#box{
-  max-height: 600rpx;
-  width: 85%;
-   border: 1rpx solid #D7D7D7; 
-  position: absolute;
-  bottom: 480rpx;
-  background: #fff;
-  z-index: 2;
-  border-radius: 20rpx;
-  overflow: scroll;
-}
-.view_hide{
-    display: none;   
-}
-.view_show{
-    display: block;
-} */
 
 /* 显示与隐藏 */
 .information image{

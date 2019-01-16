@@ -39,7 +39,7 @@ Page({
         httpUtil.promiseHttp(EqmUrl, 'GET', sendData).then(function(res) {
           if (res.statusCode == app.globalData.OK) {
             console.log('eqm--:', res.data)
-            if (res.data == null || res.data == '') { //未查到数据 跳转未绑定页面
+            if (res.data.phoneId == null || res.data.phoneId == '') { //未查到数据 跳转未绑定页面
               wx.navigateTo({
                 url: 'add/add?eqmNumber=' + that.data.eqm.eqmNumber + "&modleNumber=" + modleNumber 
               })

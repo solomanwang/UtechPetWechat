@@ -72,6 +72,9 @@ Page({
     };
     //手机号码检验合格发送获取验证码请求
     if (_phone) {
+      that.setData({
+        disabled: true
+      });
       httpUtil.promiseHttp(getCodeUrl, 'GET', sendData)
       .then((res) => {//请求成功返回
         that.data._code = res.data;
@@ -79,6 +82,9 @@ Page({
           util.setTimeInterval(app.globalData.COUNT_DOWN, that)
         }
       }).catch((res) => {//失败进入
+        that.setData({
+          disabled: false
+        });
         console.log('fail:',res)
       })
     }

@@ -25,7 +25,6 @@ Page({
 
     //页面显示加载宠物对象集合
     var that = this;
-    console.log("animalVO: ", app.data.animalVO)
     that.setData({
       animalVO: app.data.animalVO, //从app取出宠物对象集合
       stepNum: 4564

@@ -5,7 +5,7 @@
   </view> 
   <view class='key'>
     <text class='left'>名字：</text>
-    <input bindinput='getNameValue' value='{{name}}'>{{aname}}</input>
+    <input bindinput='getNameValue' value='{{name}}' maxlength='8'>{{aname}}</input>
   </view>
 
   <!-- 普通选择器 -->

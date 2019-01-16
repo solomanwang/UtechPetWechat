@@ -88,22 +88,20 @@ Page({
 
     if (selectPerson == true) {
       //查询未关联宠物的设备
-      httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone).then(function (res) {
-
+      httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone)
+      .then(function (res) {
         if (res.data != '') {
           that.setData({
+            selectArea: true,
+            selectPerson: false,
             newEqm: res.data
           })
         } else {
-          that.setData({
-            newEqm: ''
+          wx.showToast({
+            title: '没有找到您的设备',
           })
         }
         
-      })
-      that.setData({
-        selectArea: true,
-        selectPerson: false,
       })
     } else {
       that.setData({
@@ -140,7 +138,7 @@ Page({
   // 增加宠物
   saveTap: function (e) {
     let animalVO = this.data.animal;
-    animalVO.aname = '锤子了';
+    // animalVO.aname = '锤子了';
     // 判断用户信息填写
     let flag = animalUtil.checkForm(animalVO);
     console.log('flag = ',flag)
@@ -200,8 +198,7 @@ Page({
   },
 // 页面中传过来的值（姓名，品种，年龄性别等）
   getNameValue: function (e) {
-    // this.data.animal.aname = e.detail.value;
-    this.data.animal.aname = '垂直了';
+    this.data.animal.aname = e.detail.value;
   },
   classifyTap: function (e) {
     console.log(e.currentTarget.dataset.casArray);

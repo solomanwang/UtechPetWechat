@@ -15,15 +15,14 @@
       </view>
     </view>
     <view class='phone'>
-      <text>手机号码：</text>
-      <input placeholder-class="place-holder" placeholder='请输入你的手机号码' bindinput='getPhoneValue' value='{{phone}}'></input>
+      <text>手机号码为：</text>
+      <input placeholder-class="place-holder" disabled='false'value='{{phone}}'></input>
     </view>
-    <view class='code'>
-      <text bindtap='getCode' disabled='{{disabled}}'>{{codeBtn}}</text>
-    </view>
+      <button class='code' bindtap='getCode' disabled='{{disabled}}'>{{codeBtn}}</button>
     <view class='phone'>
       <text>验证码：</text>
-      <input placeholder-class="place-holder" placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'></input>
+      <input placeholder-class="place-holder" maxlength='6' type='number'
+      placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'></input>
     </view>
   </view>
 </view>

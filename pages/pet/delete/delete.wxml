@@ -6,7 +6,7 @@
   </view> 
   <view class='key'>
     <text class='left'>姓名：</text>   
-    <input bindinput='getNameValue' value='{{animal.aname}}'>{{animal.aname}}</input>
+    <input maxlength='8' bindinput='getNameValue' value='{{animal.aname}}'>{{animal.aname}}</input>
   </view>
 
   <view class='key'>

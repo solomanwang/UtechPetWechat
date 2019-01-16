@@ -18,7 +18,7 @@ data-aname='{{item.aname}}' data-age='{{item.birthday}}' data-asex='{{item.asex}
   </view>
   <view class='pic'>
     <text wx:if="{{item.eqmNumber != null && item.eqmNumber != ''}}">设备号：{{item.eqmNumber}}</text>
-    <text wx:elif="{{item.eqmNumber == null || item.eqmNumber == ''}}">没有绑定设备</text>
+    <text wx:else>没有绑定设备</text>
   </view>
 </view>
 <button class='btn' bindtap='addTap'>添加宠物</button>

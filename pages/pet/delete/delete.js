@@ -54,10 +54,12 @@ Page({
   onLoad: function(options) {
     var that = this;
     var asex = options.asex;
-    let eqmNumberData = {
-      eqmNumber: options.eqmNumber
-    };
-
+    let _eqmNumber = '';
+    if(options.eqmNumber == 'null'){
+      _eqmNumber = null
+    }else{
+     _eqmNumber = options.eqmNumber 
+    }
     let m = null;
     let w = null;
     // 获取所有未绑定宠物的设备
@@ -92,13 +94,16 @@ Page({
         varietiesName: options.varietiesName,
         asex: options.asex,
         head_img: '',
-        eqmNumber: options.eqmNumber,
+        eqmNumber: _eqmNumber,
         phoneId: app.data.user.phone,
       },
     })
     console.log('eqm:', that.data.eqm)
     //根据设备号查找绑定的设备
     if (that.data.animal.eqmNumber != 'null') {
+      let eqmNumberData = {
+        eqmNumber: _eqmNumber
+      };
       httpUtil.promiseHttp(eqmUrl, 'GET', eqmNumberData).then(function(res) {
         that.setData({
           eqm: res.data
@@ -234,21 +239,22 @@ Page({
       //查询未关联宠物的设备
       httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone)
       .then(function(res) {
+        console.log('open------',that.data.animal)
       if(res.data != ''){
         that.setData({
+          selectArea: true,
+          selectPerson: false,
           newEqm :res.data
         })
       }else{
-        that.setData({
-          newEqm: ''
+        wx.showToast({
+          title: '没有找到您的设备',
         })
       }
       })
-      that.setData({
-        selectArea: true,
-        selectPerson: false,
-      })
+
     } else {
+      console.log('colse------', that.data.animal)
       that.setData({
         selectArea: false,
         selectPerson: true,

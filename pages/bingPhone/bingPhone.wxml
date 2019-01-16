@@ -10,12 +10,14 @@
       </view>
     <view class='phone'>
       <text>手机号码：</text>
-      <input placeholder-class="place-holder" placeholder='请输入你的手机号码' bindinput='getPhoneValue' value='{{user.phone}}'></input>
+      <input placeholder-class="place-holder" placeholder='请输入你的手机号码' maxlength='11' type='number'
+       bindinput='getPhoneValue' value='{{user.phone}}'></input>
     </view>
 
     <view class='verificationcode'>
       <button class='getCodeValue' bindtap='getCode' disabled="{{disabled}}">{{codeBtn}}</button>
-      <input placeholder-class="place-holder" placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'></input>
+      <input placeholder-class="place-holder" placeholder='请输入验证码' maxlength='6' type='number'
+       bindinput='getCodeValue' value='{{code}}'></input>
     </view>
     <view class='binding'>
       <button bindtap='bingPhone'>绑定</button>

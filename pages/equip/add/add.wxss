@@ -72,23 +72,18 @@
   font-size: 12px;
 }
 
+/* 获取验证码 */
 
-/* 验证码 */
-.code{
-  width: 100%;
-  height: 100rpx;
-  /* border: 1rpx solid #dcdcdc; */
+.code {
+  height: 80rpx;
+  width: 38%;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  background-color: #fa7a47;
+  float: left;
+  margin-top: 10rpx;
 }
-.code text{
-  height: 100rpx;
-  line-height: 100rpx;
-  width: 35%;
-  font-size: 30rpx;
-  background: #fa7a47;
-  color: #fff;
-  border-radius: 5rpx;
-  padding: 10rpx;
-}
+
 /* 绑定按钮 */
 .bind{
   width: 250rpx;

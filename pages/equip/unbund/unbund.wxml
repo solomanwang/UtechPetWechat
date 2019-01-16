@@ -25,7 +25,8 @@
       <button class='code' catchtap='getCode' disabled='{{disabled}}'>{{codeBtn}}</button>
     <view class='phone'>
       <text>验证码：</text>
-      <input placeholder-class="place-holder" placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'></input>
+      <input placeholder-class="place-holder" placeholder='请输入验证码' maxlength='6' type='number'
+       bindinput='getCodeValue' value='{{code}}'></input>
     </view>
   </view>
 </view>
