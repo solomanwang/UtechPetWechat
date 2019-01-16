@@ -44,9 +44,10 @@ Page({
     let age = e.currentTarget.dataset.age;
     let asex = e.currentTarget.dataset.asex;
     let eqmNumber = e.currentTarget.dataset.eqmnumber;
+    let headImg = e.currentTarget.dataset.headimg;
     wx.navigateTo({
       url: 'delete/delete?animalId=' + animalId + "&aname=" + aname + "&varietiesName=" + varietiesName + "&birthday=" + age +
-        "&asex=" + asex + "&eqmNumber=" + eqmNumber
+        "&asex=" + asex + "&eqmNumber=" + eqmNumber +'&headImg=' + headImg
     })
   }
 

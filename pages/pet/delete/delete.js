@@ -23,6 +23,7 @@ Page({
     birthday: '',
     casArray: [],
     casIndex: '',
+    headerImg: '',
     animal: {
       headImg: '',
       animalId: "",
@@ -67,7 +68,7 @@ Page({
     let len = app.data.casArray.length; //数组的长度
     //返回的下标
     var num = animalUtil.getIndex(app.data.casArray, len, options.varietiesName);
-
+    var _headImg = options.headImg == 'null' ? '../../../image/pet.svg' : options.headImg;
     //获取当前时间戳
     var date = new Date;
     let end = util.formatTimeN(date)
@@ -87,20 +88,21 @@ Page({
       birthday: options.birthday,
       boy: m,
       girl: w,
+      headerImg: _headImg,
       animal: {
         animalId: options.animalId,
         aname: options.aname,
         birthday: options.birthday,
         varietiesName: options.varietiesName,
         asex: options.asex,
-        head_img: '',
+        headImg: _headImg,
         eqmNumber: _eqmNumber,
         phoneId: app.data.user.phone,
       },
     })
-    console.log('eqm:', that.data.eqm)
     //根据设备号查找绑定的设备
-    if (that.data.animal.eqmNumber != 'null') {
+    if (that.data.animal.eqmNumber != null) {
+      console.log('查找宠物对象的设备')
       let eqmNumberData = {
         eqmNumber: _eqmNumber
       };
@@ -120,17 +122,8 @@ Page({
   /** 生命周期函数--监听页面加载*************************************************************************************end */
   // 上传图片
   imageTap: function() {
-    wx.chooseImage({
-      count: 1, // 默认9
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function(res) {
-        var that = this;
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        app.data.tempFilePaths = res.tempFilePaths
-        console.log('图片路径' + tempFilePaths)
-      }
-    })
+    var that = this;
+    util.upLoadImg(that);
   },
 
   // 单选框的内容

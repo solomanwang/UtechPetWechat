@@ -10,7 +10,7 @@
   <block wx:elif="{{animalVO.length > 0}}">
     <cover-view class='infor' wx:for='{{animalVO}}' wx:key = 'key'>
       <cover-view class='inforcont'>
-        <cover-image class='pet' src='../../image/pet.svg'></cover-image>
+        <cover-image class='pet' src='{{item.headImg == "" ? "../../../image/pet.svg" : item.headImg}}'></cover-image>
         <cover-view class='name'>{{item.aname}}</cover-view>
       </cover-view>
       <cover-view class='bor'></cover-view>

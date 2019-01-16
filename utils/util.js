@@ -33,49 +33,44 @@ function getAge(strBirthday) {
   var birthYear = strBirthdayArr[0];
   var birthMonth = strBirthdayArr[1];
   var birthDay = strBirthdayArr[2];
-  console.log('出生年份',birthYear)
+  console.log('出生年份', birthYear)
   var d = new Date();
   var nowYear = d.getYear();
   var nowMonth = d.getMonth() + 1;
   var nowDay = d.getDate();
   console.log('现在年份', nowYear)
   if (nowYear == birthYear) {
-    returnAge = 0;//同年 则为0岁  
-  }
-  else {
+    returnAge = 0; //同年 则为0岁  
+  } else {
     var ageDiff = nowYear - birthYear; //年之差  
     if (ageDiff > 0) {
       if (nowMonth == birthMonth) {
-        var dayDiff = nowDay - birthDay;//日之差  
+        var dayDiff = nowDay - birthDay; //日之差  
         if (dayDiff < 0) {
           returnAge = ageDiff - 1;
-        }
-        else {
+        } else {
           returnAge = ageDiff;
         }
-      }
-      else {
-        var monthDiff = nowMonth - birthMonth;//月之差  
+      } else {
+        var monthDiff = nowMonth - birthMonth; //月之差  
         if (monthDiff < 0) {
           returnAge = ageDiff - 1;
-        }
-        else {
+        } else {
           returnAge = ageDiff;
         }
       }
-    }
-    else {
+    } else {
       console.log('出生日期输入错误')
-      returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天  
+      returnAge = -1; //返回-1 表示出生日期输入错误 晚于今天  
     }
   }
 
-  return returnAge;//返回周岁年龄  
+  return returnAge; //返回周岁年龄  
 
 }
 //判断是否有phone，没有就跳转到绑定页面
-function hasPhone(){
-  if (app.data.user.phone == null || app.data.user.phone == undefined || app.data.user.phone == ''){
+function hasPhone() {
+  if (app.data.user.phone == null || app.data.user.phone == undefined || app.data.user.phone == '') {
     wx.navigateTo({
       url: '../bingPhone/bingPhone'
     })
@@ -83,24 +78,49 @@ function hasPhone(){
 }
 
 //获取验证码
-function getCode(phone){
-  wx.request({
-    url: app.globalData.httpUrl + '/MiniProgram/getPhoneCode.do',
-    data: {
-      "number": phone
-    },
+function upLoadImg(that) {
+  wx.chooseImage({
     success(res) {
-      console.log('验证码',res.data)
-      return res.data
+      var tempFilePaths = res.tempFilePaths
+      console.log('tempFilePaths', tempFilePaths)
+      wx.showToast({
+        title: '正在上传...',
+        icon: 'loading',
+        mask: true,
+        duration: 10000
+      })
+      wx.uploadFile({
+        url: app.globalData.HTTP_URL + '/MiniProgram/image', // 仅为示例，非真实的接口地址
+        filePath: tempFilePaths[0],
+        name: 'file',
+        header: {
+          "Content-Type": "multipart/form-data"
+        },
+        success(res) {
+          wx.hideToast();
+          if (res.statusCode == app.globalData.OK) {
+            let data = JSON.parse(res.data)
+            console.log('imageUrl', data.imageUrl)
+            that.data.animal.headImg = data.imageUrl
+            that.setData({
+              headerImg: data.imageUrl
+            })
+          }
+        },
+        fail(res) {
+          wx.hideToast();
+          console.log('error', res)
+        }
+      })
     }
   })
 }
 //设置定时任务
 //num 为设置倒计时的时间
-function setTimeInterval(num,that){
-  var timer = setInterval(function () {
+function setTimeInterval(num, that) {
+  var timer = setInterval(function() {
     num--;
-    console.log('倒计时：',num)
+    console.log('倒计时：', num)
     if (num <= 0) {
       clearInterval(timer);
       that.setData({
@@ -118,7 +138,7 @@ function setTimeInterval(num,that){
 }
 
 //检查输入手机号码格式
-function checkPhone(phone){
+function checkPhone(phone) {
   var reg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
   if (phone == "" || phone == null) {
     wx.showToast({
@@ -134,12 +154,12 @@ function checkPhone(phone){
       duration: 1000
     })
     return false;
-  }else{
+  } else {
     return true;
   }
 }
 //检查验证码格式
-function checkCode(code){
+function checkCode(code) {
   var reg = /^\d{6}\b/;
   if (code == "" || code == null) {
     wx.showToast({
@@ -163,10 +183,10 @@ function checkCode(code){
 module.exports = {
   formatTimeD: formatTimeD,
   formatTimeN: formatTimeN,
-  getAge:getAge,
+  getAge: getAge,
   checkPhone: checkPhone,
   checkCode: checkCode,
-  getCode: getCode,
   setTimeInterval: setTimeInterval,
-  hasPhone: hasPhone
+  hasPhone: hasPhone,
+  upLoadImg: upLoadImg
 }

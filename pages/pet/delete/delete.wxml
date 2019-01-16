@@ -2,7 +2,7 @@
 <button class='delete' catchtap='deleteTap'>删除</button>
 <view class='cont'>
   <view class='pet' catchtap='imageTap'>
-    <image src='../../../image/pet.svg'></image>
+    <image src='{{headerImg}}'></image>
   </view> 
   <view class='key'>
     <text class='left'>姓名：</text>   

@@ -24,6 +24,7 @@ Page({
     casIndex: 0,
     phoneId: '',
     date: '选择日期',
+    headerImg:'../../../image/pet.svg',
     animal:{
       'headImg': '',
       'aname': '',
@@ -68,17 +69,8 @@ Page({
 
   // 上传图片
   imageTap: function(){
-    wx.chooseImage({
-      count: 1, // 默认9
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
-        var that = this;
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        app.data.tempFilePaths = res.tempFilePaths
-        console.log('图片路径'+tempFilePaths)
-      }
-    })
+    var that = this;
+    util.upLoadImg(that);
   },
 
   //查询用户的设备信息
@@ -138,14 +130,11 @@ Page({
   // 增加宠物
   saveTap: function (e) {
     let animalVO = this.data.animal;
-    // animalVO.aname = '锤子了';
     // 判断用户信息填写
     let flag = animalUtil.checkForm(animalVO);
-    console.log('flag = ',flag)
     if (flag) {    
       //添加手机号码
       animalVO.phoneId = app.data.user.phone;
-      console.log('封装好的宠物对象值：', animalVO)
       httpUtil.promiseHttp(addAnimalUrl, 'POST', animalVO)
       .then(function(res){
         let _eqmNumber = res.data.eqmNumber;

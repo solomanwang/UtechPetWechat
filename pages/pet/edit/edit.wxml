@@ -1,7 +1,7 @@
 <!--pages/pet/edit/edit.wxml-->
 <view class='cont'>
   <view class='pet' catchtap='imageTap'>
-    <image src='../../../image/pet.svg'></image>
+    <image src='{{headerImg}}'></image>
   </view> 
   <view class='key'>
     <text class='left'>名字：</text>
