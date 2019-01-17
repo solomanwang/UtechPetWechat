@@ -1,6 +1,5 @@
 <!--pages/pet/pet.wxml-->
-<view class='cont' bindtap='petTap' data-idNum='{{item.animalId}}' data-var='{{item.varietiesName}}'
-data-aname='{{item.aname}}' data-age='{{item.birthday}}' data-asex='{{item.asex}}' data-eqmNumber='{{item.eqmNumber}}'  data-phoneId='{{item.eqm.phoneId}}' data-modelName='{{item.eqm.modelName}}' data-headImg='{{item.headImg}}' wx:for="{{animalVO}}" wx:key='key'>
+<view class='cont' bindtap='petTap' data-idNum='{{item.animalId}}' wx:for="{{animalVO}}" wx:key='key'>
   <view class='tit'>
     <text class='card'>他的名片</text>
     <text class='kid' >{{item.varietiesName}}</text>

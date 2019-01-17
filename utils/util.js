@@ -77,12 +77,30 @@ function hasPhone() {
   }
 }
 
-//获取验证码
+//宠物头像上传
 function upLoadImg(that) {
   wx.chooseImage({
+    count: 1,     //默认9
+    sizeType: ['original', 'compressed'], //可以指定原图还是压缩图，默认二者都有
+    sourceType: ['album', 'camera'],//可以指定来源相册还是相机，默认二者都有
     success(res) {
-      var tempFilePaths = res.tempFilePaths
-      console.log('tempFilePaths', tempFilePaths)
+      var tempFile = res.tempFiles
+      if(tempFile[0].size > 5242880){
+        //图片压缩API无法使用
+        // wx.compressImage({
+        //   src: tempFile[0].path, // 图片路径
+        //   quality: 50, // 压缩质量
+        //   success(res){
+        //       console.log('压缩后的文件',res)
+        //   }
+        // })
+        wx.showToast({
+          title: '相片最大不能超过5MB',
+          icon: 'none',
+          duration: 2000
+        })
+        throw new Error('相片过大')
+      }
       wx.showToast({
         title: '正在上传...',
         icon: 'loading',
@@ -91,8 +109,11 @@ function upLoadImg(that) {
       })
       wx.uploadFile({
         url: app.globalData.HTTP_URL + '/MiniProgram/image', // 仅为示例，非真实的接口地址
-        filePath: tempFilePaths[0],
+        filePath: res.tempFilePaths[0],
         name: 'file',
+        formData: {
+          imgKey: that.data.animal.imgKey
+        },
         header: {
           "Content-Type": "multipart/form-data"
         },
@@ -100,8 +121,9 @@ function upLoadImg(that) {
           wx.hideToast();
           if (res.statusCode == app.globalData.OK) {
             let data = JSON.parse(res.data)
-            console.log('imageUrl', data.imageUrl)
+            console.log('data：', data)
             that.data.animal.headImg = data.imageUrl
+            that.data.animal.imgKey = data.imgKey
             that.setData({
               headerImg: data.imageUrl
             })
@@ -179,7 +201,10 @@ function checkCode(code) {
     return true;
   }
 }
-
+//设置缓存
+function setStorageSync(key,data){
+  wx.setStorageSync(key, data)
+}
 module.exports = {
   formatTimeD: formatTimeD,
   formatTimeN: formatTimeN,

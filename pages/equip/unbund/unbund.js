@@ -23,13 +23,14 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
-   console.log(options)
+  onLoad: function() {
+    var storageEqm = wx.getStorageSync(app.globalData.EQM);
+    console.log(storageEqm)
     this.setData({
-      eqmNumber: options.eqmNumber,
-      modelName: options.modelName,
-      phoneId: options.phoneId,
-      eqmImg: options.eqmImg
+      eqmNumber: storageEqm.eqmNumber,
+      modelName: storageEqm.modelName,
+      phoneId: storageEqm.phoneId,
+      eqmImg: storageEqm.eqmImg
     })
 
   },

@@ -1,46 +1,5 @@
 var app = getApp();
 
-//获取宠物对象
-function getAnimals(openId){
-  wx.request({
-    url: app.globalData.HTTP_URL + '/MiniProgram/findAllAnimal',
-    method: 'POST',
-    data: openId,
-    success: function (res) {
-      app.data.animalVO = res.data
-      console.log('app的宠物VO对象为', app.data.animalVO);
-      return res.data;
-    },fail:function(res){
-      console.log('请求失败',res)
-    }
-  })
-}
-
-//发送宠物对象
-function sendAnimalVO(animalVO, type){
-  wx.request({
-    url: app.globalData.HTTP_URL + '/MiniProgram/animal',
-    data: animalVO,
-    method: type,
-    success: function (res) {
-      if (res.statusCode == 201 || res.statusCode == 200) {
-        console.log('成功', res)
-        wx.switchTab({
-          url: '../../pet/pet',   //注意switchTab只能跳转到带有tab的页面，不能跳转到不带tab的页面
-        })
-      } else {
-        wx.showToast({
-          title: '操作失败',
-          icon: 'false',
-          duration: 1000
-        })
-      }
-    },
-    fail: function (res) {
-      console.log('进入fail')
-    }
-  })
-}
 //检查宠物对象表单
 function checkForm(animalVO){
   let flag = false;
@@ -75,68 +34,54 @@ function checkForm(animalVO){
 }
 //获取品种集合
 function getVarieties(){
-  wx.getStorage({
-    key: 'varieties',
-    success: function (res) {
-      console.log("有缓存")
-      app.data.casArray = res.data
-    },
-    //如果没有缓存从数据库拉取放入缓存
-    fail: function (res) {
-      console.log("无缓存")
-      wx.request({
-        url: app.globalData.HTTP_URL + '/MiniProgram/findVarieties',
-        data: {
-          'parentId': 1
-        },
-        method: 'GET',
-        success: function (res) {//品种请求成功
-          console.log("请求品种数据成功")
-          //存入缓存
-          wx.setStorage({
-            key: 'varieties',
-            data: res.data,
-          })
-          // that.setData({
-          //   casArray: res.data
-          // })
-          app.data.casArray = res.data
-        },
-        fail: function (res) {
-          // 品种请求异常
-          console.log("error",res)
-        }
-      })
-    }
-  });
+  app.data.casArray = wx.getStorageSync('varieties')
+  console.log("app.data.casArray.lenght--", app.data.casArray.lenght)
+  //如果没有缓存从数据库拉取放入缓存
+  if(app.data.casArray.lenght < 1){
+    console.log("无缓存")
+    wx.request({
+      url: app.globalData.HTTP_URL + '/MiniProgram/findVarieties',
+      data: {
+        'parentId': 1
+      },
+      method: 'GET',
+      success: function (res) {//品种请求成功
+        console.log("请求品种数据成功")
+        //存入缓存
+        wx.setStorageSync('varieties', res.data)
+        app.data.casArray = res.data
+      },
+      fail: function (res) {
+        // 品种请求异常
+        console.log("error", res)
+      }
+    })
+  }
 }
 //循环获取下标
 function getIndex(arr,len,value){
   for (var j = 0; j < len; j++) {
     if(arr[j].varietiesName == value){
-      console.log('返回的index = ',j)
       return j;
     }
   }
 }
 
-//改变宠物设备的关联设备号
-function changeEqmNumber(animalVO,contentType){
-  wx.request({
-    url: app.globalData.HTTP_URL + '/MiniProgram/findVarieties',
-    data:animalVO,
-    method:contentType,
-    success:function(res){
-      console.log('success-',res)
+//遍历animalVO取出设备号
+function getEqmNumberFromAnimalVO(animalVO){
+  let number = null;
+  animalVO.forEach((value,index,array)=>{
+    if(value.eqmNumber != null && value.eqmNumber != ''){
+      number = value.eqmNumber;
     }
   })
+  console.log(number)
+  return number;
 }
 
 module.exports = {
-  sendAnimalVO: sendAnimalVO,
   checkForm: checkForm,
   getVarieties: getVarieties,
   getIndex: getIndex,
-  getAnimals: getAnimals,
-  changeEqmNumber: changeEqmNumber,
+  getEqmNumberFromAnimalVO: getEqmNumberFromAnimalVO
 }

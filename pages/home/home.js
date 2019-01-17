@@ -1,6 +1,6 @@
 // pages/home/home.js
 var app = getApp();
-const aniamalUtil = require('../../utils/animal.js')
+const animalUtil = require('../../utils/animal.js')
 const eqmlUtil = require('../../utils/eqm.js')
 const httpUtil = require('../../utils/httpUtil.js')
 //经纬度转换参数
@@ -18,7 +18,7 @@ Page({
     markers: [],
     stepNum: "今日步数",
     animalVO: [],
-    eqmNumber: ''
+    eqmNumber: null
   },
   /**
    * 生命周期函数--监听页面加载 
@@ -32,75 +32,75 @@ Page({
      * */
     wx.showLoading({
       title: 'Loading...',
+      mask:true
     })
     app.getOpenId()
-    .then(function(res){
-      let phoneUrl = app.globalData.HTTP_URL + '/MiniProgram/user';
-      return app.getPhone(res.data.openid, phoneUrl);//根据获取openid获取用户信息
-    })
-    .then(function(res){
-      //判断状态码赋值
-      if(res.statusCode == 200){
-        app.data.user = res.data
-      }else{
-        wx.showToast({
-          title: '获取失败，请重试',
-          icon: 'none',
-          duration: 1000
-        })
-      }
-      //判断手机号码是否存在
-      if (app.data.user.phone == null || app.data.user.phone == undefined || app.data.user.phone == "") {
-        //表示找到用户但是没有绑定手机,跳转绑定页面
-        wx.navigateTo({
-          url: '/pages/bingPhone/bingPhone'
-        })
-        // 未找到手机号码抛出异常
-        throw new Error('phone is null')
-      }
-
-      return app.data.user.phone
-    })
-    .then(function(res){
-      //根据手机号码查询宠物信息
-      let findAnimalUrl = app.globalData.HTTP_URL + '/MiniProgram/findAllAnimal'
-      return httpUtil.promiseHttp(findAnimalUrl, 'POST', res)
-    })
-    //成功后setData
-    .then(function(res){
-      that.setData({
-        animalVO:res.data
+      .then(function(res) {
+        let phoneUrl = app.globalData.HTTP_URL + '/MiniProgram/user';
+        return app.getPhone(res.data.openid, phoneUrl); //根据获取openid获取用户信息
       })
-      app.data.animalVO = res.data
-    })
-    .catch(function(res){
-      console.log('error:',res)
-    })
-    
-    
+      .then(function(res) {
+        //判断状态码赋值
+        if (res.statusCode == 200) {
+          app.data.user = res.data
+        } else {
+          wx.showToast({
+            title: '获取失败，请重试',
+            icon: 'none',
+            duration: 1000
+          })
+        }
+        //判断手机号码是否存在
+        if (app.data.user.phone == null || app.data.user.phone == undefined || app.data.user.phone == "") {
+          //表示找到用户但是没有绑定手机,跳转绑定页面
+          wx.navigateTo({
+            url: '/pages/bingPhone/bingPhone'
+          })
+          // 未找到手机号码抛出异常
+          throw new Error('phone is null')
+        }
 
-    
-
-    // 如果查询出eqmNumber进行websocket连接
-    // if (this.data.eqmNumber != null) {
-    //   wx.connectSocket({
-    //     url: 'ws://' + app.globalData.websocketUrl,
-    //   })
-    // }
-
-    // websocket连接成功回调函数
-    wx.onSocketOpen(function() {
-      wx.showToast({
-        title: '服务器连接成功',
-        icon: 'success',
-        duration: 1000
+        return app.data.user.phone
       })
-      console.log("websocket已经连接")
-    })
-    // websocket连接失败回调
-    wx.onSocketError(function(res) {
-      console.log('WebSocket连接打开失败，请检查！')
-    })
+      .then(function(res) {
+        //根据手机号码查询宠物信息
+        let findAnimalUrl = app.globalData.HTTP_URL + '/MiniProgram/findAllAnimal'
+        return httpUtil.promiseHttp(findAnimalUrl, 'POST', res)
+      })
+      //成功后setData
+      .then(function(res) {
+        //遍历animalVO看是否有设备绑定
+        let num = animalUtil.getEqmNumberFromAnimalVO(res.data);
+        that.setData({
+          animalVO: res.data,
+          eqmNumber: num
+        })
+        app.data.animalVO = res.data
+        //将设备号存入缓存
+        wx.setStorage({
+          key: app.globalData.EQM_NUMBER,
+          data: that.data.eqmNumber,
+        })
+
+        // 如果查询出eqmNumber进行websocket连接
+        if (that.data.eqmNumber != undefined && that.data.eqmNumber != null) {
+          wx.connectSocket({
+            url: app.globalData.WEBSOCKET_URL,
+          })
+        }
+
+        // websocket连接成功回调函数
+        httpUtil.onSocketOpen()
+        // websocket连接失败回调
+        wx.onSocketError(function(res) {
+          console.log('WebSocket连接打开失败，请检查！')
+        })
+      })
+      .catch(function(res) {
+        console.log('error:', res)
+      })
+
+
   },
   /**
    * 生命周期函数--监听页面加载
@@ -130,23 +130,7 @@ Page({
       }
     })
 
-    //监听socket连接是否关闭，关闭自动重新建立连接
-    // if (this.data.eqmNumber != null) {
-    //   wx.onSocketClose(function(res) {
-    //     console.log("连接断开，开始重新连接")
-    //     wx.connectSocket({
-    //       url: 'ws://' + app.globalData.websocketUrl,
-    //       success: function(res) {
-    //         console.log("重新连接成功")
-    //         wx.showToast({
-    //           title: '重新连接成功',
-    //           icon: 'success',
-    //           duration: 2000
-    //         })
-    //       }
-    //     })
-    //   })
-    // }
+    httpUtil.onSocketClose(); //监听socket连接是否关闭，关闭自动重新建立连接
 
     //接收到服务器回传数据
     wx.onSocketMessage(function(res) {
@@ -300,16 +284,26 @@ Page({
   //发送websocket指令给设备
   goTap: function(e) {
     console.log("发送指令" + e.currentTarget.dataset.value)
-    wx.sendSocketMessage({
-      data: e.currentTarget.dataset.value,
-      fail: function(res) {
-        wx.showToast({
-          title: '发送失败',
-          icon: 'error',
-          duration: 2000
-        })
-      }
-    })
+    if (this.data.eqmNumber != undefined && this.data.eqmNumber != null) {
+      wx.sendSocketMessage({
+        data: e.currentTarget.dataset.value,
+        fail: function(res) {
+          wx.showToast({
+            title: '发送失败',
+            icon: 'none',
+            duration: 1000
+          })
+        }
+      })
+    } else {
+      wx.showToast({
+        title: '没有设备',
+        icon: 'none',
+        mask: true,
+        duration: 500
+      })
+    }
+
   },
 
 })

@@ -18,7 +18,7 @@ Page({
       phoneId: "",
       qrCode: ''
     },
-    
+    eqmNumber:null
   },
   // 添加设备扫描二维码
   click: function() {
@@ -64,7 +64,7 @@ Page({
   goTap: function(e) {
     console.log("发送指令" + e.currentTarget.dataset.value)
     wx.sendSocketMessage({
-      data: e.currentTarget.dataset.value,
+      data: this.data.eqm.eqmNumber + '&' + e.currentTarget.dataset.value,
     })
   },
   //电量和步数统计
@@ -83,24 +83,10 @@ Page({
         eqm:null
       })
     }
-    // wx.sendSocketMessage({//打开表示显示页面即发送获取电量指令
-    //   data: 'GDF'
-    // })
-    //监听socket连接是否关闭，关闭自动重新建立连接
-    wx.onSocketClose(function(res) {
-      console.log("连接断开，开始重新连接")
-      wx.connectSocket({
-        url: 'ws://' + app.globalData.websocketUrl,
-        success: function(res) {
-          console.log("重新连接成功")
-          wx.showToast({
-            title: '重新连接成功',
-            icon: 'success',
-            duration: 2000
-          })
-        }
-      })
-    })
+    console.log('that.data.eqm.eqmNumber--', that.data.eqm.eqmNumber)
+    httpUtil.onSocketClose();    //监听socket连接是否关闭，关闭自动重新建立连接
+    
+
     wx.onSocketMessage(function(res) {
       //截取回传指令判断进入哪个方法
       let data = res.data;
@@ -135,12 +121,10 @@ Page({
         })
       }
     })
-    //  获取绑定的设备信息
 
   },
   onLoad: function() {
     var that = this;
-
     //查询用户设备信息
     httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone).then(function(res) {
       if (res.statusCode == app.globalData.OK && res.data != "") {
@@ -150,18 +134,21 @@ Page({
         })
         console.log(that.data.eqm)
       }
+      if (that.data.eqm.eqmNumber != null && that.data.eqm.eqmNumber != undefined && that.data.eqm.eqmNumber != '') {
+        console.log('发送电量请求')
+        httpUtil.connectSocket();//创建socket连接
+        wx.sendSocketMessage({//打开表示显示页面即发送获取电量指令
+          data: that.data.eqm.eqmNumber + '&GDF'
+        })
+      }
     })
   },
   // 解绑
   unbundTap: function(e) {
-
     let eqmNumber = e.currentTarget.dataset.eqmnumber;
-    let phoneId = e.currentTarget.dataset.phoneid;
-    let modelName = e.currentTarget.dataset.modelname;
-    let eqmImg = e.currentTarget.dataset.eqmimg;
-    console.log(eqmImg)
+    wx.setStorageSync(app.globalData.EQM, this.data.eqm)
     wx.navigateTo({
-      url: '/pages/equip/unbund/unbund?eqmNumber=' + eqmNumber + "&phoneId=" + phoneId + "&modelName=" + modelName + '&eqmImg=' + eqmImg
+      url: '/pages/equip/unbund/unbund'
     })
   }
 

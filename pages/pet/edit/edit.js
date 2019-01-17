@@ -18,15 +18,13 @@ Page({
     varietiesName: "",//品种名
     avatarUrl: "",
     casArray: [],
-    userName: '',
-    mobile: '',
     Gender: 'female',
     casIndex: 0,
-    phoneId: '',
     date: '选择日期',
     headerImg:'../../../image/pet.svg',
     animal:{
       'headImg': '',
+      'imgKey': '',
       'aname': '',
       'varietiesName': '中华田园犬',
       'birthday': '',
@@ -35,7 +33,7 @@ Page({
       'phoneId': '',
     },
     eqm: {
-      eqmNumber: "",
+      eqmNumber: '',
       phoneId: "",
       modelName: "",
       eqmImg: ""
@@ -47,23 +45,10 @@ Page({
     var that = this;
     var date = new Date;
     let end = util.formatTimeN(date)
-    //从缓存中拉取品种信息如果
     that.setData({
       casArray:app.data.casArray,
       eqm:null,
       end:end
-    })
-    // this.data.animal.varietiesName = '中华田园犬';
-  },
-  /** -----------------------------------------------onShow--------------------------------------------------- */
-  onShow: function (options) {
-    var that = this;
-    that.setData({
-      image: "image",
-      aname: "aname",
-      varietiesName: "varietiesName",
-      birthday: "birthday",
-      asex: "asex"
     })
   },
 

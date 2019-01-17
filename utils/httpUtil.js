@@ -1,21 +1,5 @@
 var app = getApp();
 
-function httpSend(url, type, data) {
-  wx.request({
-    url: url,
-    method: type,
-    data: data,
-    success: function(res) {
-      console.log('请求成功', res)
-      return res.data;
-    },
-    fail: function(res) {
-      console.log('请求失败', res)
-    }
-  })
-}
-
-
 /***
  * promise网络请求返回一个promise对象
  * 参数url 请求地址
@@ -46,8 +30,47 @@ function promiseHttp(url, type, data) {
   })
 }
 
+//创建socket连接
+function connectSocket(){
+  wx.connectSocket({
+    url: app.globalData.WEBSOCKET_URL,
+    success(res) {
+      showSuccess()
+    },
+    fail(res){
+      showError()
+      console.log('error:',res)
+    }
+  })
+}
+
+//监听socket连接是否关闭，关闭自动重新建立连接
+function onSocketClose(){
+    // wx.onSocketClose(connectSocket())
+}
+//监听socket连接是否开启
+function onSocketOpen() {
+    wx.onSocketOpen(showSuccess())
+}
+
+function showSuccess(){
+  wx.showToast({
+    title: '连接成功',
+    icon: 'success',
+    duration: 1000
+  })
+}
+function showError() {
+  wx.showToast({
+    title: '连接失败',
+    icon: 'none',
+    duration: 1000
+  })
+}
 
 module.exports = {
-  httpSend: httpSend,
-  promiseHttp: promiseHttp
+  promiseHttp: promiseHttp,
+  connectSocket: connectSocket,
+  onSocketClose: onSocketClose,
+  onSocketOpen: onSocketOpen
 }

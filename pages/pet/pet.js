@@ -39,15 +39,14 @@ Page({
   //编辑
   petTap: function(e) {
     var animalId = e.currentTarget.dataset.idnum;
-    var aname = e.currentTarget.dataset.aname;
-    let varietiesName = e.currentTarget.dataset.var;
-    let age = e.currentTarget.dataset.age;
-    let asex = e.currentTarget.dataset.asex;
-    let eqmNumber = e.currentTarget.dataset.eqmnumber;
-    let headImg = e.currentTarget.dataset.headimg;
+    this.data.animalVO.forEach((value, index, array) => {
+      //设备号更新
+      if (animalId == value.animalId) {
+        wx.setStorageSync(app.globalData.ANIMAL, array[index]);
+      }
+    })
     wx.navigateTo({
-      url: 'delete/delete?animalId=' + animalId + "&aname=" + aname + "&varietiesName=" + varietiesName + "&birthday=" + age +
-        "&asex=" + asex + "&eqmNumber=" + eqmNumber +'&headImg=' + headImg
+      url: 'delete/delete'
     })
   }
 

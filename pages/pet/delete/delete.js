@@ -26,12 +26,13 @@ Page({
     headerImg: '',
     animal: {
       headImg: '',
+      imgKey: '',
       animalId: "",
       aname: "",
       varietiesName: "",
       birthday: "",
       asex: "",
-      eqmNumber: '',
+      eqmNumber: null,
       phoneId: '',
     },
     //选择设备弹出框展示数据
@@ -52,23 +53,17 @@ Page({
   /**
    * 生命周期函数--监听页面加载*************************************************************************************start
    */
-  onLoad: function(options) {
+  onLoad: function() {
     var that = this;
-    var asex = options.asex;
-    let _eqmNumber = '';
-    if(options.eqmNumber == 'null'){
-      _eqmNumber = null
-    }else{
-     _eqmNumber = options.eqmNumber 
-    }
+    var storageAnimal = wx.getStorageSync(app.globalData.ANIMAL);
+    console.log('缓存取出来的数据：', storageAnimal)
+    var asex = storageAnimal.asex;
     let m = null;
     let w = null;
-    // 获取所有未绑定宠物的设备
-    console.log('options = ', options);
     let len = app.data.casArray.length; //数组的长度
     //返回的下标
-    var num = animalUtil.getIndex(app.data.casArray, len, options.varietiesName);
-    var _headImg = options.headImg == 'null' ? '../../../image/pet.svg' : options.headImg;
+    var num = animalUtil.getIndex(app.data.casArray, len, storageAnimal.varietiesName);
+    var _headImg = storageAnimal.headImg == '' ? '../../../image/pet.svg' : storageAnimal.headImg;
     //获取当前时间戳
     var date = new Date;
     let end = util.formatTimeN(date)
@@ -83,20 +78,20 @@ Page({
     that.setData({
       casIndex: num,
       casArray: app.data.casArray,
-      deleteAnimalId: options.animalId,
+      deleteAnimalId: storageAnimal.animalId,
       end: end,
-      birthday: options.birthday,
+      birthday: storageAnimal.birthday,
       boy: m,
       girl: w,
       headerImg: _headImg,
       animal: {
-        animalId: options.animalId,
-        aname: options.aname,
-        birthday: options.birthday,
-        varietiesName: options.varietiesName,
-        asex: options.asex,
-        headImg: _headImg,
-        eqmNumber: _eqmNumber,
+        animalId: storageAnimal.animalId,
+        aname: storageAnimal.aname,
+        birthday: storageAnimal.birthday,
+        varietiesName: storageAnimal.varietiesName,
+        asex: storageAnimal.asex,
+        headImg: storageAnimal.headImg,
+        eqmNumber: storageAnimal.eqmNumber,
         phoneId: app.data.user.phone,
       },
     })
@@ -104,7 +99,7 @@ Page({
     if (that.data.animal.eqmNumber != null) {
       console.log('查找宠物对象的设备')
       let eqmNumberData = {
-        eqmNumber: _eqmNumber
+        eqmNumber: that.data.animal.eqmNumber
       };
       httpUtil.promiseHttp(eqmUrl, 'GET', eqmNumberData).then(function(res) {
         that.setData({
