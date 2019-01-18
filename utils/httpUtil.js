@@ -9,7 +9,7 @@ var app = getApp();
  * reject 失败的回调
  */
 function promiseHttp(url, type, data) {
-  
+
   return new Promise(function(resolve, reject) {
     wx.request({
       url: url,
@@ -23,7 +23,7 @@ function promiseHttp(url, type, data) {
         console.log('请求失败', res)
         reject(res)
       },
-      complete:function(){
+      complete: function() {
         wx.hideLoading()
       }
     })
@@ -31,35 +31,64 @@ function promiseHttp(url, type, data) {
 }
 
 //创建socket连接
-function connectSocket(){
+function connectSocket() {
   wx.connectSocket({
     url: app.globalData.WEBSOCKET_URL,
     success(res) {
+      console.log('连接成功！', res)
       showSuccess()
     },
-    fail(res){
+    fail(res) {
       showError()
-      console.log('error:',res)
+      console.log('error:', res)
     }
   })
 }
 
+//连接失败
+function connectSocketError() {
+  wx.onSocketError(function(res) {
+    showError();
+  })
+}
+
 //监听socket连接是否关闭，关闭自动重新建立连接
-function onSocketClose(){
-    // wx.onSocketClose(connectSocket())
+function onSocketClose() {
+  wx.onSocketClose(function(res) {
+    console.log('连接关闭，开始重新连接', this.data.isOpen)
+    wx.connectSocket({
+      url: app.globalData.WEBSOCKET_URL,
+      success(res) {
+        console.log('重新连接中', res)
+        wx.showToast({
+          title: '重新连接中...',
+          icon: 'none'
+        })
+      },
+      fail(res) {
+        showError()
+      }
+    })
+  })
 }
 //监听socket连接是否开启
 function onSocketOpen() {
-    wx.onSocketOpen(showSuccess())
+  wx.onSocketOpen(function() {
+    showSuccess();
+  })
 }
 
-function showSuccess(){
+//socket接收消息
+
+
+function showSuccess() {
   wx.showToast({
     title: '连接成功',
     icon: 'success',
     duration: 1000
   })
 }
+
 function showError() {
   wx.showToast({
     title: '连接失败',
@@ -68,9 +97,15 @@ function showError() {
   })
 }
 
+//电量和步数统计
+function paresPower(e) {
+  let stepNum = e.slice(3, e.length)
+  return stepNum
+}
+
 module.exports = {
   promiseHttp: promiseHttp,
   connectSocket: connectSocket,
   onSocketClose: onSocketClose,
-  onSocketOpen: onSocketOpen
+  onSocketOpen: onSocketOpen,
 }

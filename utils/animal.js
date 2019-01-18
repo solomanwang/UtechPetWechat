@@ -69,10 +69,11 @@ function getIndex(arr,len,value){
 
 //遍历animalVO取出设备号
 function getEqmNumberFromAnimalVO(animalVO){
-  let number = null;
+  let number = [];
   animalVO.forEach((value,index,array)=>{
     if(value.eqmNumber != null && value.eqmNumber != ''){
-      number = value.eqmNumber;
+       number.push(value.eqmNumber);
+       number.push(index)
     }
   })
   console.log(number)

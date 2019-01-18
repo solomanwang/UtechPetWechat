@@ -3,10 +3,8 @@ var app = getApp();
 const animalUtil = require('../../utils/animal.js')
 const eqmlUtil = require('../../utils/eqm.js')
 const httpUtil = require('../../utils/httpUtil.js')
-//经纬度转换参数
-var pi = 3.1415926535897932384626
-var a = 6378245.0;
-var ee = 0.00669342162296594323;
+const util = require('../../utils/util.js')
+
 Page({
   /**
    * 页面的初始数据
@@ -18,7 +16,9 @@ Page({
     markers: [],
     stepNum: "今日步数",
     animalVO: [],
-    eqmNumber: null
+    eqmNumber: null,
+    isOpen: false,
+    animalId:0,
   },
   /**
    * 生命周期函数--监听页面加载 
@@ -32,7 +32,7 @@ Page({
      * */
     wx.showLoading({
       title: 'Loading...',
-      mask:true
+      mask: true
     })
     app.getOpenId()
       .then(function(res) {
@@ -73,7 +73,8 @@ Page({
         let num = animalUtil.getEqmNumberFromAnimalVO(res.data);
         that.setData({
           animalVO: res.data,
-          eqmNumber: num
+          eqmNumber: num[0],
+          animalId:[1]
         })
         app.data.animalVO = res.data
         //将设备号存入缓存
@@ -84,24 +85,19 @@ Page({
 
         // 如果查询出eqmNumber进行websocket连接
         if (that.data.eqmNumber != undefined && that.data.eqmNumber != null) {
-          wx.connectSocket({
-            url: app.globalData.WEBSOCKET_URL,
+          console.log('开始连接。。。')
+          httpUtil.connectSocket(); //连接websocket
+          that.setData({
+            isOpen: true
           })
         }
 
-        // websocket连接成功回调函数
-        httpUtil.onSocketOpen()
-        // websocket连接失败回调
-        wx.onSocketError(function(res) {
-          console.log('WebSocket连接打开失败，请检查！')
-        })
       })
       .catch(function(res) {
         console.log('error:', res)
       })
-
-
   },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -111,6 +107,7 @@ Page({
     that.setData({
       animalVO: app.data.animalVO
     })
+
     type: 'gcj02',
       //程序打开加载地图组件
       wx.getLocation({
@@ -121,7 +118,8 @@ Page({
           })
         }
       })
-    // 获取手机屏幕高度
+
+    // 获取手机屏幕高度 
     wx.getSystemInfo({
       success: function(res) {
         that.setData({
@@ -130,161 +128,51 @@ Page({
       }
     })
 
-    httpUtil.onSocketClose(); //监听socket连接是否关闭，关闭自动重新建立连接
+    //因为程序加载异步问题，onLoad里面的连接还未建立就会执行到这里，所以加入判定条件，判定之前已经建立过连接在监听是否需要重新连接
+    if (that.data.isOpen) {
+      console.log('连接打开', this.data.isOpen)
+      httpUtil.onSocketClose() //监听socket连接是否关闭，关闭自动重新建立连接
+    }
+
+    httpUtil.onSocketOpen(); //监听是否连接打开
 
     //接收到服务器回传数据
-    wx.onSocketMessage(function(res) {
-      console.log('收到服务器内容：' + res.data)
-      //截取回传指令判断进入哪个方法
-      let data = res.data;
-      let cum = data.slice(0, 3)
-      if (cum == 'SP:') { //获取步数统计  
-        let arr = that.paresStepCount(data);
-        console.log("传感器数据" + arr)
-        app.data.stepNum = parseInt(arr[0])
-        that.setData({
-          // stepNum: parseInt(arr[0])
-          stepNum: 1423
-        })
-      } else if (cum == 'GPS') { //获取GPS数据
-        //获取map上下文添加marker
-        that.getCenterLocation(data);
-      } else if (cum == 'CLO') { //设备关闭
-        console.log("设备关闭")
-        wx.showToast({
-          title: '设备关闭',
-          icon: 'error',
-          duration: 2000
-        })
-      } else if (cum == 'OPE') { //设备开启
-        console.log("设备开启")
-        wx.showToast({
-          title: '设备打开',
-          icon: 'success',
-          duration: 2000
-        })
-      } else if (cum == 'OUT') { //设备开启
-        console.log("与服务器断开")
-        wx.showToast({
-          title: '与服务器断开',
-          icon: 'error',
-          duration: 2000
-        })
-      } else if (cum == 'CON') { //设备开启
-        console.log("与服务器连接")
-        wx.showToast({
-          title: '与服务器连接',
-          icon: 'success',
-          duration: 2000
-        })
-      } else if (cum == 'NEQ') { //设备开启
-        console.log("设备未打开")
-        wx.showToast({
-          title: '设备未打开',
-          icon: 'error',
-          duration: 2000
-        })
-      }
-    })
+    wx.onSocketMessage(function (res) {
+      util.parseData(that, res)
+    });
   },
+
+  //程序加载成功后获取map上下文
   onReady: function() {
     this.mapCtx = wx.createMapContext("map");
   },
-  //获取当前地图中心的经纬度，返回的是 gcj02 坐标系
-  getCenterLocation: function(data) {
-    var that = this
-    this.mapCtx.getCenterLocation({
-      success: function(res) {
-        that.setData({
-          userLat: res.longitude,
-          userLong: res.latitude,
-          //将回传的经纬度解析为marker添加到markers
-          markers: [that.paresLatAndLong(data)]
-        })
-      }
-    })
-  },
-  //解析gps经纬度
-  paresLatAndLong: function(e) {
-    //GPS29.805230,106.397880NE9
-    let arr = e.split(",")
-    let lat = arr[0].slice(3, arr[0].length)
-    let long = arr[1].slice(0, 10)
-    //调用坐标换算函数并将参数类型进行转换
-    let local = this.wgs84ToGcj02(parseFloat(lat), parseFloat(long))
-    console.log("解析以后的坐标" + local)
-    let marker = {
-      iconPath: "../../image/localtion.png",
-      id: 2,
-      latitude: local[0],
-      longitude: local[1],
-      width: 25,
-      height: 25,
-    }
-    return marker;
-  },
-  //解析步数统计
-  paresStepCount(e) {
-    //SP:XXXXXX,TP:YYY
-    let src = [];
-    let arr = e.split(",");
-    let count = arr[0].slice(3, arr[0].length);
-    let temperature = arr[1].slice(3, arr[1].length);
-    src.push(count);
-    src.push(temperature);
-    return src;
-  },
+
   regionchange(e) {
-    // 地图发生变化的时候，获取中间点，也就是用户选择的位置
-    if (e.type == 'end') {}
+    // 地图发生变化的时候，获取中间点，也就是用户选择的位置 
+    if (e.type == 'end') { }
   },
+
   // 跳到电子围栏页
   fenceTap: function() {
     wx.navigateTo({
       url: '/pages/home/fence/fence',
     })
   },
+
   // 跳到轨迹追踪页
   trackTap: function() {
     wx.navigateTo({
       url: '/pages/home/line/line',
     })
   },
-  //wgs84坐标转换gcj02坐标
-  wgs84ToGcj02: function(lat, lon) {
-    // if (outOfChina(lat, lon)) { return null; }
-    let dLat = this.transformLat(lon - 105.0, lat - 35.0);
-    let dLon = this.transformLon(lon - 105.0, lat - 35.0);
-    let radLat = (lat / 180.0) * pi;
-    let magic = Math.sin(radLat);
-    magic = 1 - ee * magic * magic;
-    let sqrtMagic = Math.sqrt(magic);
-    dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * pi);
-    dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
-    let mgLat = (lat + dLat);
-    let mgLon = (lon + dLon);
-    let local = [mgLat, mgLon];
-    return local;
-  },
 
-  transformLat: function(x, y) {
-    let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
-    ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0;
-    ret += (20.0 * Math.sin(y * pi) + 40.0 * Math.sin(y / 3.0 * pi)) * 2.0 / 3.0;
-    ret += (160.0 * Math.sin(y / 12.0 * pi) + 320 * Math.sin(y * pi / 30.0)) * 2.0 / 3.0;
-    return ret;
-  },
-  transformLon: function(x, y) {
-    let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
-    ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0;
-    ret += (20.0 * Math.sin(x * pi) + 40.0 * Math.sin(x / 3.0 * pi)) * 2.0 / 3.0;
-    ret += (150.0 * Math.sin(x / 12.0 * pi) + 300.0 * Math.sin(x / 30.0 * pi)) * 2.0 / 3.0;
-    return ret;
-  },
   //发送websocket指令给设备
   goTap: function(e) {
     console.log("发送指令" + e.currentTarget.dataset.value)
     if (this.data.eqmNumber != undefined && this.data.eqmNumber != null) {
+
+      httpUtil.onSocketClose();
+
       wx.sendSocketMessage({
         data: e.currentTarget.dataset.value,
         fail: function(res) {
@@ -303,7 +191,6 @@ Page({
         duration: 500
       })
     }
-
   },
 
 })

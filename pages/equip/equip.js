@@ -67,12 +67,7 @@ Page({
       data: this.data.eqm.eqmNumber + '&' + e.currentTarget.dataset.value,
     })
   },
-  //电量和步数统计
-  paresPower(e) {
-    let arr = e.split(",")
-    let stepNum = arr[1].slice(3, arr[1].length)
-    return stepNum
-  },
+  
   //页面显示发送获取电量请求
   onShow() {
     util.hasPhone(); //判断是否有电话号码
@@ -83,46 +78,14 @@ Page({
         eqm:null
       })
     }
-    console.log('that.data.eqm.eqmNumber--', that.data.eqm.eqmNumber)
-    httpUtil.onSocketClose();    //监听socket连接是否关闭，关闭自动重新建立连接
     
+    httpUtil.onSocketClose();//监听socket连接是否关闭，关闭自动重新建立连接
 
-    wx.onSocketMessage(function(res) {
-      //截取回传指令判断进入哪个方法
-      let data = res.data;
-      let cum = data.slice(0, 3)
-      //ID:XXXXXXX,BT:YY
-      if (cum == 'ID:') { //获取设备电量  
-        let arr = that.paresPower(data);
-        console.log("传感器数据" + arr)
-        that.setData({
-          power: parseInt(arr) * 20 + "%"
-        })
-      } else if (cum == 'CLO') { //设备关闭
-        console.log("设备关闭")
-        wx.showToast({
-          title: '设备关闭',
-          icon: 'error',
-          duration: 2000
-        })
-      } else if (cum == 'OUT') { //设备开启
-        console.log("与服务器断开")
-        wx.showToast({
-          title: '与服务器断开',
-          icon: 'error',
-          duration: 2000
-        })
-      } else if (cum == 'NEQ') { //设备开启
-        console.log("设备未打开")
-        wx.showToast({
-          title: '设备未打开',
-          icon: 'error',
-          duration: 2000
-        })
-      }
-    })
-
+    wx.onSocketMessage(function (res) {
+      util.parseData(that, res)
+    });//接收到服务器回传数据   
   },
+
   onLoad: function() {
     var that = this;
     //查询用户设备信息
@@ -136,7 +99,6 @@ Page({
       }
       if (that.data.eqm.eqmNumber != null && that.data.eqm.eqmNumber != undefined && that.data.eqm.eqmNumber != '') {
         console.log('发送电量请求')
-        httpUtil.connectSocket();//创建socket连接
         wx.sendSocketMessage({//打开表示显示页面即发送获取电量指令
           data: that.data.eqm.eqmNumber + '&GDF'
         })
