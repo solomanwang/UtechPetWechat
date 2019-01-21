@@ -55,7 +55,7 @@ function connectSocketError() {
 //监听socket连接是否关闭，关闭自动重新建立连接
 function onSocketClose() {
   wx.onSocketClose(function(res) {
-    console.log('连接关闭，开始重新连接', this.data.isOpen)
+    console.log('连接关闭，开始重新连接')
     wx.connectSocket({
       url: app.globalData.WEBSOCKET_URL,
       success(res) {
@@ -97,11 +97,7 @@ function showError() {
   })
 }
 
-//电量和步数统计
-function paresPower(e) {
-  let stepNum = e.slice(3, e.length)
-  return stepNum
-}
+
 
 module.exports = {
   promiseHttp: promiseHttp,

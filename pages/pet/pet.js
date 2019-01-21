@@ -9,7 +9,6 @@ Page({
   data: {
     casArray: [],
     arr: "",
-    stepNum: "0",
     animalVO: [] //宠物对象数组
   },
   onLoad: function() {
@@ -27,7 +26,6 @@ Page({
     var that = this;
     that.setData({
       animalVO: app.data.animalVO, //从app取出宠物对象集合
-      stepNum: 4564
     })
   },
   // 跳到添加宠物页

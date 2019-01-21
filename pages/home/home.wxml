@@ -14,12 +14,9 @@
         <cover-view class='name'>{{item.aname}}</cover-view>
       </cover-view>
       <cover-view class='bor'></cover-view>
-      <cover-view class='inforcom' wx:if='{{stepNum!=null}}'>
+      <cover-view class='inforcom'>
         <cover-view>步数：</cover-view>
-        <cover-view>{{stepNum}}</cover-view>
-      </cover-view>
-      <cover-view class='inforcom' wx:elif='{{stepNum==null}}'>
-        <cover-view>没有绑定设备</cover-view>
+        <cover-view>{{item.stepNum == null ? 0 : item.stepNum}}</cover-view>
       </cover-view>
     </cover-view>
   </block>

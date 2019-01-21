@@ -18,7 +18,7 @@ Page({
     animalVO: [],
     eqmNumber: null,
     isOpen: false,
-    animalId:0,
+    index:0,
   },
   /**
    * 生命周期函数--监听页面加载 
@@ -74,7 +74,7 @@ Page({
         that.setData({
           animalVO: res.data,
           eqmNumber: num[0],
-          animalId:[1]
+          index:[1]
         })
         app.data.animalVO = res.data
         //将设备号存入缓存

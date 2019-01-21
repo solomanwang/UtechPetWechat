@@ -1,4 +1,3 @@
-<!--pages/pet/edit/edit.wxml-->
 <button class='delete' catchtap='deleteTap'>删除</button>
 <view class='cont'>
   <view class='pet' catchtap='imageTap'>
@@ -11,7 +10,6 @@
 
   <view class='key'>
     <text class='left'>品种：</text>
-    <!-- <input placeholder-style="font-size:30rpx" placeholder='选择品种'> -->
     <view class="row-wrap">
       <picker bindchange="bindCasPickerChange" value="{{casIndex}}" range="{{casArray}}" range-key="varietiesName">
         <view>
@@ -19,7 +17,6 @@
         </view>
       </picker>
     </view>    
-    <!-- </input> -->
   </view>
   <!-- 更改为日期选择器 -->
   <view class="key">

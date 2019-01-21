@@ -1,4 +1,3 @@
-<!--pages/pet/pet.wxml-->
 <view class='cont' bindtap='petTap' data-idNum='{{item.animalId}}' wx:for="{{animalVO}}" wx:key='key'>
   <view class='tit'>
     <text class='card'>他的名片</text>
@@ -12,7 +11,7 @@
   </view>
   <view class='detail state'>
     <image class='mark' src='../../image/mark.svg'></image>
-    <text class='step'>{{stepNum}}</text>  
+    <text class='step'>{{item.stepNum == null ? 0 : item.stepNum}}</text>  
     <text class='birthday'>生日：{{item.birthday}}</text>
   </view>
   <view class='pic'>

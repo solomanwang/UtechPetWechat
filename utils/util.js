@@ -212,7 +212,7 @@ function parseData(that, res) {
   let data = res.data;
   //ID:XXXXXXX,BT:YY
   if (data.startsWith('BT:')) { //获取设备电量  
-    let arr = that.paresPower(data);
+    let arr = paresPower(data);
     console.log("传感器数据" + arr)
     that.setData({
       power: parseInt(arr) * 20 + "%"
@@ -241,10 +241,10 @@ function parseData(that, res) {
   } else if (data.startsWith('SP')) { //获取步数统计   
     let arr = paresStepCount(data);
     console.log("传感器数据" + arr)
-    that.data.animalVO[that.animalId].stepNum = parseInt(arr[0])
-    console.log(that.data.animalVO[animalId])
+    app.data.animalVO = that.data.animalVO;//更新全局变量的宠物对象数据
+    let up = 'animalVO[' + that.data.index +'].stepNum';
     that.setData({
-      stepNum: parseInt(arr[0])
+      [up]: parseInt(arr[0])
     })
   } else if (data.startsWith('GPS')) { //获取GPS数据 
     //获取map上下文添加marker 
@@ -254,6 +254,12 @@ function parseData(that, res) {
       title: '还未获取到位置信息，请稍等',
     })
   }
+}
+
+//电量
+function paresPower(e) {
+  let power = e.slice(3, e.length)
+  return power
 }
 
 //解析步数统计
