@@ -139,6 +139,7 @@ Page({
     //接收到服务器回传数据
     wx.onSocketMessage(function (res) {
       util.parseData(that, res)
+      console.log("lat:",that.data.userLat,that.data.userLong)
     });
   },
 

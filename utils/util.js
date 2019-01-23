@@ -302,11 +302,12 @@ function paresLatAndLong(e) {
   let marker = {
     iconPath: "../image/localtion.png",
     id: 2,
-    latitude: local[0],
-    longitude: local[1],
+    latitude: 29.8166958465,//local[0],
+    longitude: 106.5244030966,//local[1],
     width: 25,
     height: 25,
   }
+  console.log(marker)
   return marker;
 }
 
