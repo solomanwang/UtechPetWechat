@@ -10,7 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    scale: "18",
+    scale: "14",
     userLat: "",
     userLong: "",
     markers: [],
@@ -27,6 +27,14 @@ Page({
   onLoad: function() {
     console.log("----------onLoad-------")
     var that = this;
+    // 获取手机屏幕高度 
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          windowHeight: res.windowHeight,
+        })
+      }
+    })
     /**
      * 获取宠物信息-参数为openId
      * */
@@ -119,14 +127,7 @@ Page({
         }
       })
 
-    // 获取手机屏幕高度 
-    wx.getSystemInfo({
-      success: function(res) {
-        that.setData({
-          windowHeight: res.windowHeight,
-        })
-      }
-    })
+    
 
     //因为程序加载异步问题，onLoad里面的连接还未建立就会执行到这里，所以加入判定条件，判定之前已经建立过连接在监听是否需要重新连接
     if (that.data.isOpen) {

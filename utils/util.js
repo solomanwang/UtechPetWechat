@@ -279,8 +279,8 @@ function getCenterLocation(that,data) {
   that.mapCtx.getCenterLocation({
     success: function(res) {
       that.setData({
-        userLat: res.longitude,
-        userLong: res.latitude,
+        userLat: res.latitude,
+        userLong: res.longitude,
         //将回传的经纬度解析为marker添加到markers
         markers: [paresLatAndLong(data)]
       })
@@ -300,14 +300,13 @@ function paresLatAndLong(e) {
   let local = wgs84ToGcj02(parseFloat(lat), parseFloat(long))
   console.log("解析以后的坐标" + local)
   let marker = {
-    iconPath: "../image/localtion.png",
+    iconPath: "../../image/localtion.png",
     id: 2,
-    latitude: 29.8166958465,//local[0],
-    longitude: 106.5244030966,//local[1],
+    latitude: local[0],
+    longitude: local[1],
     width: 25,
     height: 25,
   }
-  console.log(marker)
   return marker;
 }
 

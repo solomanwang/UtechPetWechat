@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.5.0",
+	"libVersion": "2.5.1",
 	"appid": "wx91b2cf461c56fd3c",
 	"projectname": "UtechPet",
 	"isGameTourist": false,

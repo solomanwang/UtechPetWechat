@@ -1,8 +1,0 @@
-<!--pages/user/user.wxml-->
-<import src="../bingPhone/bingPhone.wxml"/>
-<view wx:if='{{isShow}}'>
-<template is="bingPhone"/>
-</view>
-
-<view bindtap='clickMe'>点击</view>
-<view hidden="{{hiddenName}}">隐藏显示部分</view>
