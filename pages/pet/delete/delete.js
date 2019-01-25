@@ -157,6 +157,12 @@ Page({
               array[index] = res.data
             }
           })
+          if(saveAnimal.eqmNumber != null && saveAnimal.eqmNumber != undefined){
+            wx.setStorage({
+              key: app.globalData.EQM_NUMBER,
+              data: saveAnimal.eqmNumber,
+            })
+          }
           wx.switchTab({
             url: '../../pet/pet',
           })
@@ -185,6 +191,11 @@ Page({
   deleteTap: function(e) {
     var that = this;
     var animalId = that.data.deleteAnimalId; //获取删除id
+    let sendData = { //封装animal对象，只需要两个字段，id和imgKey
+      animalId:animalId,
+      imgKey:that.data.animal.imgKey
+    };
+    console.log(sendData)
     wx.showModal({
       title: '提示',
       content: '您确定要删除吗？',
@@ -192,7 +203,7 @@ Page({
         //确定开始请求
         if (res.confirm) {
 
-          httpUtil.promiseHttp(animalUrl, 'DELETE', animalId).then(function(res) {
+          httpUtil.promiseHttp(animalUrl, 'DELETE', sendData).then(function(res) {
             // 请求成功以后更新数组
             if (res.statusCode == 201 || res.statusCode == app.globalData.OK) {
               app.data.animalVO.forEach((value, index, array) => {

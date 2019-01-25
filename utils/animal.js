@@ -37,7 +37,7 @@ function getVarieties(){
   app.data.casArray = wx.getStorageSync('varieties')
   console.log("app.data.casArray.lenght--", app.data.casArray.lenght)
   //如果没有缓存从数据库拉取放入缓存
-  if(app.data.casArray.lenght < 1){
+  if(app.data.casArray.lenght == undefined){
     console.log("无缓存")
     wx.request({
       url: app.globalData.HTTP_URL + '/MiniProgram/findVarieties',
@@ -71,12 +71,13 @@ function getIndex(arr,len,value){
 function getEqmNumberFromAnimalVO(animalVO){
   let number = [];
   animalVO.forEach((value,index,array)=>{
+    console.log('val:',value.eqmNumber)
     if(value.eqmNumber != null && value.eqmNumber != ''){
        number.push(value.eqmNumber);
-       number.push(index)
+       number.push(index);
     }
   })
-  console.log(number)
+  console.log('number:',number)
   return number;
 }
 

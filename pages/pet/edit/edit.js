@@ -133,6 +133,12 @@ Page({
             }
           })
           app.data.animalVO.push(res.data)
+          if (animalVO.eqmNumber != null && animalVO.eqmNumber != undefined) {
+            wx.setStorage({
+              key: app.globalData.EQM_NUMBER,
+              data: animalVO.eqmNumber,
+            })
+          }
           wx.switchTab({
             url: '../../pet/pet',   //注意switchTab只能跳转到带有tab的页面，不能跳转到不带tab的页面
           })

@@ -18,7 +18,7 @@ Page({
     animalVO: [],
     eqmNumber: null,
     isOpen: false,
-    index:0,
+    index: 0,
   },
   /**
    * 生命周期函数--监听页面加载 
@@ -29,12 +29,24 @@ Page({
     var that = this;
     // 获取手机屏幕高度 
     wx.getSystemInfo({
-      success: function (res) {
+      success: function(res) {
         that.setData({
           windowHeight: res.windowHeight,
         })
       }
     })
+
+    type: 'gcj02',
+      //程序打开加载地图组件
+      wx.getLocation({
+        success: function(res) {
+          that.setData({
+            userLat: res.latitude,
+            userLong: res.longitude,
+          })
+        }
+      })
+
     /**
      * 获取宠物信息-参数为openId
      * */
@@ -73,17 +85,23 @@ Page({
       .then(function(res) {
         //根据手机号码查询宠物信息
         let findAnimalUrl = app.globalData.HTTP_URL + '/MiniProgram/findAllAnimal'
+        
         return httpUtil.promiseHttp(findAnimalUrl, 'POST', res)
       })
       //成功后setData
       .then(function(res) {
-        //遍历animalVO看是否有设备绑定
-        let num = animalUtil.getEqmNumberFromAnimalVO(res.data);
         that.setData({
           animalVO: res.data,
-          eqmNumber: num[0],
-          index:[1]
+          // index: [1]
         })
+        //遍历animalVO看是否有设备绑定
+        let num = animalUtil.getEqmNumberFromAnimalVO(res.data);
+        if (num.length > 0) {
+          that.setData({
+            eqmNumber: num[0],
+            index: num[1]
+          })
+        }
         app.data.animalVO = res.data
         //将设备号存入缓存
         wx.setStorage({
@@ -112,22 +130,21 @@ Page({
   onShow: function() {
     console.log("----------onShow-------")
     var that = this;
+    let num = wx.getStorageSync(app.globalData.EQM_NUMBER);
+    if(num != null  && num != undefined){
+      that.setData({
+        eqmNumber:num
+      })
+    }
     that.setData({
       animalVO: app.data.animalVO
     })
 
-    type: 'gcj02',
-      //程序打开加载地图组件
-      wx.getLocation({
-        success: function(res) {
-          that.setData({
-            userLat: res.latitude,
-            userLong: res.longitude,
-          })
-        }
-      })
-
-    
+    //获取用户位置将显示地图调整至用户未中心
+    console.log('that.mapCtx:', that.mapCtx);
+    if(that.mapCtx != undefined){
+      that.mapCtx.moveToLocation();
+    }
 
     //因为程序加载异步问题，onLoad里面的连接还未建立就会执行到这里，所以加入判定条件，判定之前已经建立过连接在监听是否需要重新连接
     if (that.data.isOpen) {
@@ -135,12 +152,11 @@ Page({
       httpUtil.onSocketClose() //监听socket连接是否关闭，关闭自动重新建立连接
     }
 
-    httpUtil.onSocketOpen(); //监听是否连接打开
+    // httpUtil.onSocketOpen(); //监听是否连接打开
 
     //接收到服务器回传数据
-    wx.onSocketMessage(function (res) {
+    wx.onSocketMessage(function(res) {
       util.parseData(that, res)
-      console.log("lat:",that.data.userLat,that.data.userLong)
     });
   },
 
@@ -151,7 +167,7 @@ Page({
 
   regionchange(e) {
     // 地图发生变化的时候，获取中间点，也就是用户选择的位置 
-    if (e.type == 'end') { }
+    if (e.type == 'end') {}
   },
 
   // 跳到电子围栏页
@@ -170,14 +186,19 @@ Page({
 
   //发送websocket指令给设备
   goTap: function(e) {
-    console.log("发送指令" + e.currentTarget.dataset.value)
+    
     if (this.data.eqmNumber != undefined && this.data.eqmNumber != null) {
 
-      httpUtil.onSocketClose();
-
+      // httpUtil.onSocketClose();
+      wx.onSocketClose(function(){
+        console.log("发送消息是检查到链接关闭，重新连接")
+        wx.connectSocket({
+          url: app.globalData.WEBSOCKET_URL,
+        })
+      })
       wx.sendSocketMessage({
         data: e.currentTarget.dataset.value,
-        fail: function(res) {
+        fail: function (res) {
           wx.showToast({
             title: '发送失败',
             icon: 'none',
@@ -185,6 +206,7 @@ Page({
           })
         }
       })
+     
     } else {
       wx.showToast({
         title: '没有设备',

@@ -29,7 +29,9 @@ Page({
         let result = res.result;
         //解析获取二维码内容
         let arr = result.split('-');
+        console.log('arr:', arr);
         that.data.eqm.eqmNumber = arr[0];
+        console.log('eqmNumber:',arr[0]);
         let modleNumber = arr[1]
         //获取设备号发送后台查询是否绑定手机
         console.log(this.data.eqm)
@@ -72,6 +74,12 @@ Page({
   onShow() {
     util.hasPhone(); //判断是否有电话号码
     var that = this
+    let num = wx.getStorageSync(app.globalData.EQM_NUMBER)
+    if(num != undefined){
+      // that.setData({
+
+      // })
+    }
     if(app.data.unbund){
       that.setData({
         show:false,
@@ -97,12 +105,12 @@ Page({
         })
         console.log(that.data.eqm)
       }
-      if (that.data.eqm.eqmNumber != null && that.data.eqm.eqmNumber != undefined && that.data.eqm.eqmNumber != '') {
-        console.log('发送电量请求')
-        wx.sendSocketMessage({//打开表示显示页面即发送获取电量指令
-          data: that.data.eqm.eqmNumber + '&GDF'
-        })
-      }
+      // if (that.data.eqm.eqmNumber != null && that.data.eqm.eqmNumber != undefined && that.data.eqm.eqmNumber != '') {
+      //   console.log('发送电量请求')
+      //   wx.sendSocketMessage({//打开表示显示页面即发送获取电量指令
+      //     data: that.data.eqm.eqmNumber + '&GDF'
+      //   })
+      // }
     })
   },
   // 解绑
