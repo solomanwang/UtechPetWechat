@@ -1,77 +1,57 @@
 // pages/home/line/line.js
+var app = getApp();
+const httpUtil = require('../../../utils/httpUtil.js')
+const getGPSurl = app.globalData.HTTP_URL + '/MiniProgram/GPS'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    
+    points: [],
+    polyline: null,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    wx.getLocation({
-      type: 'gcj02', //返回可以用于wx.openLocation的经纬度
-      success: function (res) {
-        var latitude = res.latitude
-        var longitude = res.longitude
-        wx.openLocation({
-          latitude: latitude,
-          longitude: longitude,
-          scale: 28
-        })
-      }
+    var that = this;
+    // 使用 wx.createMapContext 获取 map 上下文
+    this.mapCtx = wx.createMapContext('polymap')
+    var sendData = {
+      'eqmNumber': wx.getStorageSync(app.globalData.EQM_NUMBER)
+    };
+    httpUtil.promiseHttp(getGPSurl, 'GET',sendData)
+    .then((res=>{
+      that.paserGPS(res.data)
+      var polyline = [{
+        points: that.data.points,
+        color: '#FFB90F',
+        width: 5,
+        dottedLine: true,
+        borderWidth: 3,
+        arrowLine: true
+      }]
+      that.setData({
+        polyline: polyline
+      })
+    }))
+    // 让地图展示所有的坐标点
+    this.mapCtx.includePoints({
+      padding: [2],
+      points: this.data.points
     })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  //解析GPS数据生成Posints 坐标点
+  paserGPS(res) {
+    for (var i in res) {
+      let str = res[i].split(",")
+      let lon = {
+        latitude: str[0].slice(3, str[0].length),
+        longitude: str[1].slice(0, str[1].indexOf("N"))
+      }
+      this.data.points.push(lon)
+    }
   }
 })

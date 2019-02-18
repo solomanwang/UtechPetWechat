@@ -57,9 +57,10 @@ Page({
     app.getOpenId()
       .then(function(res) {
         let phoneUrl = app.globalData.HTTP_URL + '/MiniProgram/user';
-        return app.getPhone(res.data.openid, phoneUrl); //根据获取openid获取用户信息
+        return app.getPhone(res.data.openid, phoneUrl); //根据openid获取用户信息
       })
       .then(function(res) {
+        console.log('phone :',res)
         //判断状态码赋值
         if (res.statusCode == 200) {
           app.data.user = res.data
@@ -186,7 +187,7 @@ Page({
 
   //发送websocket指令给设备
   goTap: function(e) {
-    
+    console.log('number:', e.currentTarget.dataset.value)
     if (this.data.eqmNumber != undefined && this.data.eqmNumber != null) {
 
       // httpUtil.onSocketClose();
