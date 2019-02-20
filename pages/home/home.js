@@ -170,11 +170,11 @@ Page({
   },
 
   // 跳到电子围栏页
-  fenceTap: function() {
-    wx.navigateTo({
-      url: '/pages/home/fence/fence',
-    })
-  },
+  // fenceTap: function() {
+  //   wx.navigateTo({
+  //     url: '/pages/home/fence/fence',
+  //   })
+  // },
 
   // 跳到轨迹追踪页
   trackTap: function() {

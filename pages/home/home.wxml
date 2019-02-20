@@ -20,10 +20,10 @@
       </cover-view>
     </cover-view>
   </block>
-  <cover-view class='fence' bindtap='fenceTap'>
+  <!-- <cover-view class='fence' bindtap='fenceTap'>
     <cover-image src='../../image/fence.png'></cover-image>
     <cover-view>电子围栏</cover-view>
-  </cover-view>
+  </cover-view> -->
   <cover-view class='track' bindtap='trackTap'>
     <cover-image src='../../image/foot.png'></cover-image>
     <cover-view>轨迹追踪</cover-view>
