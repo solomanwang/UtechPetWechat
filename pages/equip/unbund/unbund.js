@@ -18,19 +18,19 @@ Page({
     modelName: '',
     phoneId: '',
     eqmImg:'',
-    disabled: false
+    disabled: false,
+    timer:null
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function() {
     var storageEqm = wx.getStorageSync(app.globalData.EQM);
-    console.log(storageEqm)
     this.setData({
       eqmNumber: storageEqm.eqmNumber,
       modelName: storageEqm.modelName,
       phoneId: storageEqm.phoneId,
-      eqmImg: storageEqm.eqmImg
+      eqmImg: storageEqm.eqmImg,
     })
 
   },
@@ -57,7 +57,8 @@ Page({
         .then((res) => { //请求成功返回
           that.data._code = res.data;
           if (that.data._code) { //开始倒计时
-            util.setTimeInterval(app.globalData.COUNT_DOWN, that)
+            that.data.timer = util.setTimeInterval(app.globalData.COUNT_DOWN, that)
+
           }
         }).catch((res) => { //失败进入
           that.setData({
@@ -87,6 +88,7 @@ Page({
               icon: 'success',
               duration: 1000,
             }),
+            clearInterval(that.data.timer)
             wx.switchTab({
               url: '../../equip/equip', 
             })

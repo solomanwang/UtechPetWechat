@@ -125,7 +125,6 @@ Page({
   // 1表示母，2表示公；
   radioChange: function(e) {
     if (e.detail.value != 1) {
-      console.log(boy)
       this.data({
         boy: !boy,
         girl: !girl
@@ -158,10 +157,7 @@ Page({
             }
           })
           if(saveAnimal.eqmNumber != null && saveAnimal.eqmNumber != undefined){
-            wx.setStorage({
-              key: app.globalData.EQM_NUMBER,
-              data: saveAnimal.eqmNumber,
-            })
+              app.data.eqmNumber = saveAnimal.eqmNumber
           }
           wx.switchTab({
             url: '../../pet/pet',
@@ -238,7 +234,6 @@ Page({
       //查询未关联宠物的设备
       httpUtil.promiseHttp(findEqmUrl, 'POST', app.data.user.phone)
       .then(function(res) {
-        console.log('open------',that.data.animal)
       if(res.data != ''){
         that.setData({
           selectArea: true,
@@ -262,7 +257,6 @@ Page({
   },
   //点击切换  宠物绑定设备获取信息
   mySelect: function(e) {
-    console.log(e)
     var that = this;
     that.data.animal.eqmNumber = e.currentTarget.dataset.number;
     let _eqm = {

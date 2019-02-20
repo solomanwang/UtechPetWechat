@@ -14,7 +14,8 @@ Page({
     eqmNumber: "",
     modelName: "",
     eqmImg: "",
-    disabled: false
+    disabled: false,
+    timer:null
   },
   onLoad: function(options) {
     console.log(options)
@@ -54,7 +55,9 @@ Page({
         .then((res) => { //请求成功返回
           that.data._code = res.data;
           if (that.data._code) { //开始倒计时
-            util.setTimeInterval(app.globalData.COUNT_DOWN, that)
+            that.setData({
+              timer: util.setTimeInterval(app.globalData.COUNT_DOWN, that)
+            })
           }
         }).catch((res) => { //失败进入
           that.setData({
@@ -89,10 +92,12 @@ Page({
               icon: 'success',
               duration: 1000,
             }),
-            //将设备号存入缓存
+            clearInterval(this.data.timer)//清楚倒计时
+            //缓存
+            app.data.eqmNumber = this.data.eqmNumber;
             wx.setStorage({
-              key: app.globalData.EQM_NUMBER,
-              data: this.data.eqmNumber,
+              key: app.globalData.EQM,
+              data: res.data,
             })
           wx.reLaunch({
             url: '../../equip/equip'

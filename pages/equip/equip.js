@@ -66,7 +66,7 @@ Page({
   goTap: function(e) {
     console.log("发送指令" + e.currentTarget.dataset.value)
     wx.sendSocketMessage({
-      data: this.data.eqm.eqmNumber + '&' + e.currentTarget.dataset.value,
+      data: app.data.eqmNumber + '&' + e.currentTarget.dataset.value,
     })
   },
   
@@ -74,7 +74,7 @@ Page({
   onShow() {
     util.hasPhone(); //判断是否有电话号码
     var that = this
-    let num = wx.getStorageSync(app.globalData.EQM_NUMBER)
+    let num = app.data.eqmNumber;
     if(num != undefined){
       // that.setData({
 
@@ -116,7 +116,7 @@ Page({
   // 解绑
   unbundTap: function(e) {
     let eqmNumber = e.currentTarget.dataset.eqmnumber;
-    wx.setStorageSync(app.globalData.EQM, this.data.eqm)
+    app.data.eqmNumber = null;
     wx.navigateTo({
       url: '/pages/equip/unbund/unbund'
     })

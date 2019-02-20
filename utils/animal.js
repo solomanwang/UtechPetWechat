@@ -34,10 +34,9 @@ function checkForm(animalVO){
 }
 //获取品种集合
 function getVarieties(){
-  app.data.casArray = wx.getStorageSync('varieties')
-  console.log("app.data.casArray.lenght--", app.data.casArray.lenght)
+  app.data.casArray = wx.getStorageSync(app.globalData.VARIETIES)
   //如果没有缓存从数据库拉取放入缓存
-  if(app.data.casArray.lenght == undefined){
+  if (app.data.casArray.length < 1){
     console.log("无缓存")
     wx.request({
       url: app.globalData.HTTP_URL + '/MiniProgram/findVarieties',
@@ -46,9 +45,8 @@ function getVarieties(){
       },
       method: 'GET',
       success: function (res) {//品种请求成功
-        console.log("请求品种数据成功")
         //存入缓存
-        wx.setStorageSync('varieties', res.data)
+        wx.setStorageSync(app.globalData.VARIETIES, res.data)
         app.data.casArray = res.data
       },
       fail: function (res) {
@@ -71,13 +69,11 @@ function getIndex(arr,len,value){
 function getEqmNumberFromAnimalVO(animalVO){
   let number = [];
   animalVO.forEach((value,index,array)=>{
-    console.log('val:',value.eqmNumber)
     if(value.eqmNumber != null && value.eqmNumber != ''){
        number.push(value.eqmNumber);
        number.push(index);
     }
   })
-  console.log('number:',number)
   return number;
 }
 

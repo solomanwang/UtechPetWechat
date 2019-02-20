@@ -90,7 +90,6 @@ Page({
   
   //点击切换  宠物绑定设备获取信息
   mySelect: function (e) {
-    console.log(e)
     var that = this;
     that.data.animal.eqmNumber = e.currentTarget.dataset.number;
     let _eqm = {
@@ -125,6 +124,10 @@ Page({
         let _eqmNumber = res.data.eqmNumber;
         // 跳转pet页面
         if (res.statusCode == 201 || res.statusCode == 200) {
+          //如果app.data.animalVO没有宠物可能为 ''，所以需要声明app.data.animalVO为数组 才能使用forEach。push方法
+          if(app.data.animalVO == ''){
+            app.data.animalVO = []
+          }
       // 返回的宠物对象推送到app.data.animalVO.push(res)
           app.data.animalVO.forEach((value, index, array) => {
             //设备号更新
@@ -132,12 +135,11 @@ Page({
               array[index].eqmNumber = null;
             }
           })
+
           app.data.animalVO.push(res.data)
+
           if (animalVO.eqmNumber != null && animalVO.eqmNumber != undefined) {
-            wx.setStorage({
-              key: app.globalData.EQM_NUMBER,
-              data: animalVO.eqmNumber,
-            })
+              app.data.eqmNumber = animalVO.eqmNumber;
           }
           wx.switchTab({
             url: '../../pet/pet',   //注意switchTab只能跳转到带有tab的页面，不能跳转到不带tab的页面

@@ -16,7 +16,8 @@ Page({
     },
     codeBtn: '获取验证码',
     disabled: false,
-    _code: false
+    _code: false,
+    timer:null
   },
 
   /**
@@ -47,6 +48,7 @@ Page({
     if (_phone && _code) {//校验成功发送请求
       httpUtil.promiseHttp(url, 'POST', this.data.user).then((res) =>{
         if (res.statusCode == 200){
+          clearInterval(this.data.timer)
           wx.reLaunch({
             url: '../home/home'
           })
@@ -72,19 +74,13 @@ Page({
     };
     //手机号码检验合格发送获取验证码请求
     if (_phone) {
-      that.setData({
-        disabled: true
-      });
       httpUtil.promiseHttp(getCodeUrl, 'GET', sendData)
       .then((res) => {//请求成功返回
         that.data._code = res.data;
         if (that.data._code) {//开始倒计时
-          util.setTimeInterval(app.globalData.COUNT_DOWN, that)
+          that.data.timer = util.setTimeInterval(app.globalData.COUNT_DOWN, that)
         }
       }).catch((res) => {//失败进入
-        that.setData({
-          disabled: false
-        });
         console.log('fail:',res)
       })
     }
