@@ -5,6 +5,15 @@ App({
       openId: '',
       phone: ''
     },
+    eqm: {
+      animalId: '',
+      code: '',
+      eqmImg: "",
+      eqmNumber: "",
+      modelName: "",
+      phoneId: "",
+      qrCode: ''
+    },
     eqmModle: {
       MODLE_A: '丐中丐',
       MODLE_B: '入门级',
@@ -45,9 +54,10 @@ App({
   globalData: {
     APP_ID: 'wx91b2cf461c56fd3c', //appid需自己提供，此处的appid我随机编写
     SECRET: '9ed7df070d5766b4d03137fe3a5a5718', //secret需自己提供，此处的secret我随机编写
-    HTTP_URL: "http://www.ai-ray.cn:8083", //http请求前缀
-    // HTTP_URL: "http://127.0.0.1:8083", //http请求前缀
-    WEBSOCKET_URL: 'ws://www.ai-ray.cn:8082', //websocket 请求前缀
+    // HTTP_URL: "http://140.143.90.101:8083", //http请求前缀
+    HTTP_URL: "http://127.0.0.1:8083", //http请求前缀
+    // WEBSOCKET_URL: 'ws://140.143.90.101:8082', //websocket 请求前缀
+    WEBSOCKET_URL: 'ws://127.0.0.1:8082', //websocket 请求前缀
     COUNT_DOWN: 60, //倒计时时间
     OK: 200,
     ANIMAL:'animal',

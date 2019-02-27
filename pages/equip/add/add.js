@@ -95,10 +95,7 @@ Page({
             clearInterval(this.data.timer)//清楚倒计时
             //缓存
             app.data.eqmNumber = this.data.eqmNumber;
-            wx.setStorage({
-              key: app.globalData.EQM,
-              data: res.data,
-            })
+            app.data.eqm = res.data
           wx.reLaunch({
             url: '../../equip/equip'
           })

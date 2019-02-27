@@ -90,7 +90,6 @@ Page({
       })
       //成功后setData
       .then(function(res) {
-        console.log('res :')
         that.setData({
           animalVO: res.data,
           // index: [1]

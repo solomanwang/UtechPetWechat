@@ -240,17 +240,14 @@ function getCenterLocation(that,data) {
   })
 }
 
-//解析gps经纬度
+//解析gps经纬度返回marker
 function paresLatAndLong(e) {
   //GPS29.805230,106.397880NE9
   let arr = e.split(",")
   let lat = arr[0].slice(3, arr[0].length)
   let long = arr[1].slice(0, arr[1].indexOf("N"))
-  console.log(long)
-  console.log(arr[1].indexOf('N'))
   //调用坐标换算函数并将参数类型进行转换
   let local = wgs84ToGcj02(parseFloat(lat), parseFloat(long))
-  console.log("解析以后的坐标" + local)
   let marker = {
     iconPath: "../../image/localtion.png",
     id: 2,
@@ -259,8 +256,24 @@ function paresLatAndLong(e) {
     width: 25,
     height: 25,
   }
-  console.log('解释的坐标为',marker)
   return marker;
+}
+
+//解析GPS数据返回points
+function paserGPS(res) {
+  var arr =[];
+  for (var i in res) {
+    let str = res[i].split(",")
+    let lat = str[0]
+    let long = str[1].slice(0, str[1].indexOf("N"))
+    let local = wgs84ToGcj02(parseFloat(lat), parseFloat(long))
+    let lon = {
+      latitude: local[0],
+      longitude: local[1]
+    }
+    arr.push(lon)
+  }
+  return arr;
 }
 
 //wgs84坐标转换gcj02坐标
@@ -304,5 +317,6 @@ module.exports = {
   setTimeInterval: setTimeInterval,
   hasPhone: hasPhone,
   upLoadImg: upLoadImg,
+  paserGPS: paserGPS,
   parseData: parseData
 }

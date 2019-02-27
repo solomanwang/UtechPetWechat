@@ -65,6 +65,7 @@ Page({
   //发送websocket指令给设备
   goTap: function(e) {
     console.log("发送指令" + e.currentTarget.dataset.value)
+    console.log("app.data.eqmNumber:" + app.data.eqmNumber)
     wx.sendSocketMessage({
       data: app.data.eqmNumber + '&' + e.currentTarget.dataset.value,
     })
@@ -103,6 +104,7 @@ Page({
           eqm: res.data,
           show: true
         })
+        app.data.eqm = that.data.eqm
         console.log(that.data.eqm)
       }
       // if (that.data.eqm.eqmNumber != null && that.data.eqm.eqmNumber != undefined && that.data.eqm.eqmNumber != '') {
@@ -116,7 +118,6 @@ Page({
   // 解绑
   unbundTap: function(e) {
     let eqmNumber = e.currentTarget.dataset.eqmnumber;
-    app.data.eqmNumber = null;
     wx.navigateTo({
       url: '/pages/equip/unbund/unbund'
     })

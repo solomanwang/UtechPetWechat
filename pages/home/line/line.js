@@ -1,6 +1,7 @@
 // pages/home/line/line.js
 var app = getApp();
 const httpUtil = require('../../../utils/httpUtil.js')
+const util = require('../../../utils/util.js')
 const getGPSurl = app.globalData.HTTP_URL + '/MiniProgram/GPS'
 Page({
 
@@ -26,7 +27,10 @@ Page({
     .then((res=>{
       // Object.keys(res.data).length > 0 判断回传数据是否为空
       if (Object.keys(res.data).length > 0){
-        that.paserGPS(res.data)
+        //解析GPS数据，修正偏移量
+        that.setData({
+          points: util.paserGPS(res.data)
+        })
         var polyline = [{
           points: that.data.points,
           color: '#FFB90F',
@@ -61,15 +65,5 @@ Page({
       }))
     
   },
-  //解析GPS数据生成Posints 坐标点
-  paserGPS(res) {
-    for (var i in res) {
-      let str = res[i].split(",")
-      let lon = {
-        latitude: str[0],
-        longitude: str[1].slice(0, str[1].indexOf("N"))
-      }
-      this.data.points.push(lon)
-    }
-  }
+  
 })

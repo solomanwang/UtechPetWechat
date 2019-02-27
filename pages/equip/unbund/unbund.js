@@ -25,12 +25,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function() {
-    var storageEqm = wx.getStorageSync(app.globalData.EQM);
     this.setData({
-      eqmNumber: storageEqm.eqmNumber,
-      modelName: storageEqm.modelName,
-      phoneId: storageEqm.phoneId,
-      eqmImg: storageEqm.eqmImg,
+      eqmNumber: app.data.eqm.eqmNumber,
+      modelName: app.data.eqm.modelName,
+      phoneId: app.data.eqm.phoneId,
+      eqmImg: app.data.eqm.eqmImg,
     })
 
   },
@@ -83,6 +82,7 @@ Page({
       httpUtil.promiseHttp(eqmUrl, 'DELETE', _eqm).then((res) => {
         if (res.statusCode == 200) {
           app.data.unbund = true
+          app.data.eqmNumber = null;
           wx.showToast({
               title: '解绑成功',
               icon: 'success',

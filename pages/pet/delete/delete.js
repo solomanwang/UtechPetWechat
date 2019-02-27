@@ -91,6 +91,7 @@ Page({
         varietiesName: storageAnimal.varietiesName,
         asex: storageAnimal.asex,
         headImg: storageAnimal.headImg,
+        imgKey: storageAnimal.imgKey,
         eqmNumber: storageAnimal.eqmNumber,
         phoneId: app.data.user.phone,
       },
