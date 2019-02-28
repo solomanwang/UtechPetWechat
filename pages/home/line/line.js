@@ -34,9 +34,10 @@ Page({
         var polyline = [{
           points: that.data.points,
           color: '#FFB90F',
-          width: 5,
-          dottedLine: true,
-          borderWidth: 3,
+          width: 8,
+          dottedLine: false,
+          borderWidth: 5,
+          borderColor:'#FFB90F',
           arrowLine: true
         }]
         that.setData({
