@@ -31,7 +31,7 @@ Page({
   // 跳到添加宠物页
   addTap: function(options) {
     wx.navigateTo({
-      url: '/pages/pet/edit/edit?user_id=111',
+      url: 'edit/edit',
     })
   },
   //编辑

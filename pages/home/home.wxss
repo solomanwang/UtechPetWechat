@@ -36,10 +36,14 @@
   margin: auto;
   border: 0.5rpx solid #DBDBDB;
 }
-.inforcont .pet{
+/* .inforcont .pet{
   height: 50rpx;
   width: 50rpx;
   border-radius: 50%;
+} */
+.inforcont cover-image{
+  height: 50rpx;
+  width: 50rpx;
 }
 .inforcont .name{
   font-size: 24rpx;

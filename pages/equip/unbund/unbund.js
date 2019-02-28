@@ -88,7 +88,7 @@ Page({
               icon: 'success',
               duration: 1000,
             }),
-            clearInterval(that.data.timer)
+            clearInterval(this.data.timer)
             wx.switchTab({
               url: '../../equip/equip', 
             })
@@ -99,8 +99,9 @@ Page({
           })
         }
       }).catch((res) => {
+        console.log(res)
         wx.showToast({
-          title: '绑定失败',
+          title: '发生错误',
         })
       })
     }

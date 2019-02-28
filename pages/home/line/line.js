@@ -44,7 +44,7 @@ Page({
         })
         // 让地图展示所有的坐标点
         this.mapCtx.includePoints({
-          padding: [2],
+          padding: [10],
           points: this.data.points
         })
       }else{

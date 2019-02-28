@@ -4,9 +4,9 @@
     <text class='kid' >{{item.varietiesName}}</text>
   </view>
   <view class='detail'>
-    <image class='pet' src='{{item.headImg == "" ? "../../../image/pet.svg" : item.headImg}}'></image>
+    <image class='pet' src='{{item.headImg == "" ? "../../image/pet.svg" : item.headImg}}'></image>
     <text class='user' >{{item.aname}}</text>
-    <image class='boy' src="{{item.asex== 1 ? '../../../image/girl.svg':'../../../image/boy.svg'}}"></image>
+    <image class='boy' src="{{item.asex== 1 ? '../../image/girl.svg':'../../image/boy.svg'}}"></image>
     
   </view>
   <view class='detail state'>

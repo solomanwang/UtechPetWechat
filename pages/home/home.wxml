@@ -10,7 +10,7 @@
   <block wx:elif="{{animalVO.length > 0}}">
     <cover-view class='infor' wx:for='{{animalVO}}' wx:key = 'key'>
       <cover-view class='inforcont'>
-        <cover-image class='pet' src='{{item.headImg == "" ? "../../../image/pet.svg" : item.headImg}}'></cover-image>
+        <cover-image class='pet' src='{{item.headImg == "" ? "/image/pet.svg" : item.headImg}}'></cover-image>
         <cover-view class='name'>{{item.aname}}</cover-view>
       </cover-view>
       <cover-view class='bor'></cover-view>
@@ -25,7 +25,7 @@
     <cover-view>电子围栏</cover-view>
   </cover-view> -->
   <cover-view class='track' bindtap='trackTap'>
-    <cover-image src='../../image/foot.png'></cover-image>
+    <cover-image src='/image/foot.png'></cover-image>
     <cover-view>轨迹追踪</cover-view>
   </cover-view>
   <cover-view class='go step' bindtap='goTap' data-value='{{eqmNumber}}&GSS'>

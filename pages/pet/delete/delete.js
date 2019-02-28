@@ -98,7 +98,6 @@ Page({
     })
     //根据设备号查找绑定的设备
     if (that.data.animal.eqmNumber != null) {
-      console.log('查找宠物对象的设备')
       let eqmNumberData = {
         eqmNumber: that.data.animal.eqmNumber
       };
@@ -249,7 +248,6 @@ Page({
       })
 
     } else {
-      console.log('colse------', that.data.animal)
       that.setData({
         selectArea: false,
         selectPerson: true,
