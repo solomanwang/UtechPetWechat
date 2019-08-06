@@ -15,6 +15,8 @@
 	"appid": "wx91b2cf461c56fd3c",
 	"projectname": "UtechPet",
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

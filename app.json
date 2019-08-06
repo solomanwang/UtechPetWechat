@@ -15,7 +15,7 @@
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#f8801d",
-    "backgroundColorTop":"#f8801d",
+    "backgroundColorTop": "#f8801d",
     "navigationBarTitleText": "导宠",
     "navigationBarTextStyle": "black"
   },
@@ -24,7 +24,6 @@
     "backgroundColor": "#ffffff",
     "selectedColor": "#f8801d",
     "list": [
-      
       {
         "pagePath": "pages/pet/pet",
         "text": "宠物",
@@ -50,9 +49,10 @@
     "downloadFile": 10000
   },
   "debug": true,
-  "permission":{
+  "permission": {
     "scope.userLocation": {
       "desc": "小程序需要获取您的位置信息"
     }
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

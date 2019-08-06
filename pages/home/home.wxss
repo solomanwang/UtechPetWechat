@@ -131,4 +131,7 @@
 .go.auto{
   bottom: 100rpx;
 }
-/* 刷新地图定位 */
+/* 测试点击变换效果 */
+.other-button-hover {
+  background-color: blue;
+}
